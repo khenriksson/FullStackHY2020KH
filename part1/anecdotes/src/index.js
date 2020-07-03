@@ -8,18 +8,46 @@ const Button = ({ handleClick, text }) => {
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [votes, setVote] = useState(
+      new Array(anecdotes.length + 1).join("0").split("").map(parseFloat)
+  );
+  const [maxIndex, setIndex] = useState(0)
+
+
 
   const setRandom =  () => {
       const rand = Math.floor(Math.random() * anecdotes.length);
       setSelected(rand);
   };
 
+  const vote = () => {
+      const copy = [...votes]
+      copy[selected]++
+      setVote(copy)
+      mostVotesIndex()
+
+  }
+
+  const mostVotesIndex = () => {
+      const indexOfMaxValue = votes.reduce(
+          (iMax, x, i, arr) => (x > arr[iMax] ? i : iMax),
+          0,
+      );
+
+     setIndex(indexOfMaxValue);
+  }
+
   return (
-    <div>
-      {props.anecdotes[selected]} <br/>
-      <Button handleClick={setRandom} text="next anecdote"/>
-    </div>
-  )
+      <div>
+          <h1>Anecdote of the day</h1>
+          {props.anecdotes[selected]} <br />
+          <p>has {votes[selected]} votes</p>
+          <Button handleClick={setRandom} text="next anecdote" />
+          <Button handleClick={vote} text="vote" />
+          <h1>Anecdote with most votes</h1>
+          <p>{anecdotes[maxIndex]}</p>
+      </div>
+  );
 }
 
 const anecdotes = [
