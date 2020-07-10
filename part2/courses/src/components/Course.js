@@ -2,15 +2,15 @@ import React from "react";
 
 
 const Header = ({ course }) => {
-    return <h1>{course.name}</h1>;
+    return <h2>{course.name}</h2>;
 };
 
 const Total = ({ course }) => {
-    const sum =
-        course.parts[0].exercises +
-        course.parts[1].exercises +
-        course.parts[2].exercises;
-    return <p>Number of exercises {sum}</p>;
+
+    const sum = course.parts.reduce(
+        (accumulator, currentValue) => accumulator + currentValue.exercises, 0
+    );
+    return <h4>total of {sum} exercises</h4>;
 };
 
 const Part = (props) => {
@@ -25,7 +25,7 @@ const Content = ( {course} ) => {
     return (
         <div>
             
-        {course.parts.map(item => <Part key={item.name} part={item} />)}
+        {course.parts.map(item => <Part key={item.id} part={item} />)}
         </div>
     );
 };
@@ -33,8 +33,10 @@ const Content = ( {course} ) => {
 const Course = ({course}) => {
     return (
         <div>
+            
             <Header course={course} />
             <Content course={course} />
+            <Total course={course} />
         </div>
     );
 
