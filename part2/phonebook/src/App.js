@@ -1,20 +1,25 @@
-import React, { useState } from "react"
-import Name from "./components/Name"
+import React, { useState, useEffect } from "react"
 import AddPerson from "./components/AddPerson"
 import Filter from "./components/Filter"
 import Number from "./components/Number"
+import numberService from "./services/numbers"
 
 const App = () => {
-    const [persons, setPersons] = useState([
-        { name: "Arto Hellas", number: "040-123456" },
-        { name: "Ada Lovelace", number: "39-44-5323523" },
-        { name: "Dan Abramov", number: "12-43-234345" },
-        { name: "Mary Poppendieck", number: "39-23-6423122" },
-    ])
+    const [persons, setPersons] = useState([])
     const [newName, setNewName] = useState("")
     const [newNumber, setNewNumber] = useState("")
     const [newSearch, setNewSearch] = useState("")
     const [showAll, setShowAll] = useState(true)
+
+    //  The Effect Hook lets you perform side effects in function components. Data fetching, setting up a subscription, and manually changing the DOM in React components are all examples of side effects.
+
+    useEffect(() => {
+        console.log("effect")
+        numberService.getAll().then((initialData) => {
+            console.log("promise fulfilled")
+            setPersons(initialData)
+        })
+    }, [])
 
     const addPerson = (event) => {
         event.preventDefault()
@@ -30,8 +35,21 @@ const App = () => {
         if (persons.some((item) => item.name === nameObject.name)) {
             window.alert(`${nameObject.name} already exists in phonebook`)
         } else {
-            setPersons(persons.concat(nameObject))
-            setNewName("")
+            numberService.create(nameObject).then((returnedNote) => {
+                setPersons(persons.concat(returnedNote))
+                setNewName("")
+            })
+        }
+    }
+
+    const removePerson = (event) => {
+        event.preventDefault()
+
+        if (window.confirm("Are you sure")) {
+            const id = parseInt(event.target.value)
+            numberService.remove(id).then((deletedNumber) => {
+                setPersons(persons.filter((number) => number.id !== id))
+            })
         }
     }
 
@@ -71,7 +89,7 @@ const App = () => {
                 onChangeNumber={handleNumberChange}
             />
             <h2>Numbers</h2>
-            <Number show={nameToShow} />
+            <Number show={nameToShow} removePerson={removePerson} />
         </div>
     )
 }
