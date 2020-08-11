@@ -4,9 +4,6 @@ import "./index.css"
 import App from "./App"
 import * as serviceWorker from "./serviceWorker"
 
-// const promise2 = axios.get("http://localhost:3001/foobar")
-// console.log(promise2)
-
 ReactDOM.render(
     <React.StrictMode>
         <App />

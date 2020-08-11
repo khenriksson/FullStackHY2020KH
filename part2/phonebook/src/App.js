@@ -10,6 +10,8 @@ const App = () => {
     const [newNumber, setNewNumber] = useState("")
     const [newSearch, setNewSearch] = useState("")
     const [showAll, setShowAll] = useState(true)
+    const [errorMessage, setErrorMessage] = useState("")
+    const [errorType, setErrorType] = useState(false)
 
     //  The Effect Hook lets you perform side effects in function components. Data fetching, setting up a subscription, and manually changing the DOM in React components are all examples of side effects.
 
@@ -27,18 +29,56 @@ const App = () => {
         const nameObject = {
             name: newName,
             number: newNumber,
-            // date: new Date().toISOString(),
-            // important: Math.random() < 0.5,
-            // id: persons.length + 1,
         }
 
         if (persons.some((item) => item.name === nameObject.name)) {
-            window.alert(`${nameObject.name} already exists in phonebook`)
+            const id = persons.find((x) => x.name === nameObject.name).id
+            if (
+                window.confirm(
+                    `${nameObject.name} already exists in phonebook, replace the old number with a new one?`,
+                )
+            ) {
+                // How to update correctly
+                numberService
+                    .update(id, nameObject)
+                    .then((returnedNote) => {
+                        const newList = persons.map((item) => {
+                            if (item.id === id) {
+                                const updatedItem = {
+                                    ...item,
+                                    number: returnedNote.number,
+                                }
+                                return updatedItem
+                            }
+                            return item
+                        })
+                        setPersons(newList)
+                    })
+                    .catch(() => {
+                        setErrorType(true)
+                        setErrorMessage(
+                            ` '${nameObject.name}' was already removed`,
+                        )
+                        setTimeout(() => {
+                            setErrorMessage(null)
+                            setErrorType(false)
+                        }, 5000)
+                    })
+            }
         } else {
-            numberService.create(nameObject).then((returnedNote) => {
-                setPersons(persons.concat(returnedNote))
-                setNewName("")
-            })
+            numberService
+                .create(nameObject)
+                .then((returnedNote) => {
+                    setPersons(persons.concat(returnedNote))
+                    setNewName("")
+                    setNewNumber("")
+                })
+                .then(() => {
+                    setErrorMessage(`Added '${nameObject.name}'`)
+                    setTimeout(() => {
+                        setErrorMessage(null)
+                    }, 5000)
+                })
         }
     }
 
@@ -73,10 +113,18 @@ const App = () => {
               item.name.toLowerCase().includes(newSearch.toLowerCase()),
           )
 
+    const Notification = ({ message }) => {
+        if (message === null) {
+            return null
+        }
+        if (errorType === true) return <div className="error">{message}</div>
+        else return <div className="success">{message}</div>
+    }
+
     return (
         <div>
             <h2>Phonebook</h2>
-            search :{" "}
+            search : <Notification message={errorMessage} />
             <Filter
                 valueSearch={newSearch}
                 onChangeFilter={handleFilterChange}
