@@ -10,20 +10,17 @@ const App = () => {
     const [newNumber, setNewNumber] = useState("")
     const [newSearch, setNewSearch] = useState("")
     const [showAll, setShowAll] = useState(true)
-    const [errorMessage, setErrorMessage] = useState("")
+    const [errorMessage, setErrorMessage] = useState(null)
     const [errorType, setErrorType] = useState(false)
 
     //  The Effect Hook lets you perform side effects in function components. Data fetching, setting up a subscription, and manually changing the DOM in React components are all examples of side effects.
 
     useEffect(() => {
-        console.log("effect")
         numberService.getAll().then((initialData) => {
-            console.log(initialData, "data")
             console.log("promise fulfilled")
             setPersons(initialData)
         })
     }, [])
-
     const addPerson = (event) => {
         event.preventDefault()
 
@@ -80,6 +77,14 @@ const App = () => {
                         setErrorMessage(null)
                     }, 5000)
                 })
+                .catch((error) => {
+                    setErrorType(true)
+                    setErrorMessage(error.response.data.error)
+                    setTimeout(() => {
+                        setErrorMessage(null)
+                        setErrorType(false)
+                    }, 5000)
+                })
         }
     }
 
@@ -103,7 +108,6 @@ const App = () => {
     }
     const handleFilterChange = (event) => {
         setShowAll(false)
-        console.log(event.target.value)
         setNewSearch(event.target.value)
         if (event.target.value === "") setShowAll(true)
     }
