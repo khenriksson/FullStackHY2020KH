@@ -1,0 +1,11 @@
+GET http://localhost:3003/api/blogs/
+Content-Type: application/json
+
+{
+    "title": "Great blog1",
+    "author": "Kasper Henriksson",
+    "url": "Testing,",
+    "likes": 4
+}
+
+
