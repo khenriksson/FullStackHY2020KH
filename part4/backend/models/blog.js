@@ -8,11 +8,24 @@ const mongoose = require('mongoose')
 // console.log(url)
 
 const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
+  title: {
+    type: String,
+    required: true,
+  },
+  author: {
+    type: String,
+  },
+  url: {
+    type: String,
+    required: true,
+  },
   likes: {
     type: Number,
+    default: 0,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
 })
 
