@@ -5,6 +5,7 @@ const app = require('../app')
 
 const api = supertest(app)
 const Blog = require('../models/blog')
+const { usersInDb } = require('./test_helper')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -73,11 +74,15 @@ describe('viewing a specific blog', () => {
 
 describe('addition of a new blog', () => {
   test('succeeds with valid data', async () => {
+    usersAtStart = await helper.usersInDb()
+    user = usersAtStart[0]
+    console.log(user)
     const newBlog = {
       title: 'async/await simplifies making async calls',
       author: 'Kasper Henriksson',
       url: 'Testing 2',
       likes: 11,
+      userId: user.id,
     }
 
     await api
@@ -94,10 +99,13 @@ describe('addition of a new blog', () => {
     expect(titles).toContain('async/await simplifies making async calls')
   })
   test('succeeds with likes defaulting to 0', async () => {
+    usersAtStart = await helper.usersInDb()
+    user = usersAtStart[0]
     const newBlog = {
       title: 'async/await simplifies making async calls',
       author: 'Kasper Henriksson',
       url: 'Testing 2',
+      userId: user.id,
     }
 
     await api
@@ -115,9 +123,12 @@ describe('addition of a new blog', () => {
   })
 
   test('fails with status code 400 if data invaild', async () => {
+    usersAtStart = await helper.usersInDb()
+    user = usersAtStart[0]
     const newBlog = {
       author: 'Kasper Henriksson',
       likes: 11,
+      userId: user.id,
     }
 
     await api.post('/api/blogs').send(newBlog).expect(400)
