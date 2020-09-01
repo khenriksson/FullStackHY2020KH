@@ -49,7 +49,7 @@ describe('when there is initially one user in db', () => {
       password: 'salainen',
     }
 
-    const result = await api
+    await api
       .post('/api/users')
       .send(newUser)
       .expect(400)
