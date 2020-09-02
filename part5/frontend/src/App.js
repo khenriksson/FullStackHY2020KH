@@ -50,7 +50,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -120,11 +120,17 @@ const App = () => {
       })
       console.log('Blog: ', blog)
       setBlogs(blogs.concat(blog))
+
+      setErrorMessage(`a new blog ${blog.title} by ${blog.author} added`)
+
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
       setTitle('')
       setAuthor('')
       setUrl('')
     } catch (exception) {
-      setErrorMessage('Wrong')
+      setErrorMessage('Blog not added')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
