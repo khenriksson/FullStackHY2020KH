@@ -14,6 +14,14 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
+  /**
+   * useStates for creating a new blog
+   */
+
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
@@ -73,6 +81,56 @@ const App = () => {
     </form>
   )
 
+  const createForm = () => (
+    <form onSubmit={handleCreate}>
+      <div>
+        <p>title:</p>
+        <input
+          type='text'
+          value={title}
+          name='Title'
+          onChange={({ target }) => setTitle(target.value)}
+        />
+        <p>author:</p>
+        <input
+          type='text'
+          value={author}
+          name='Author'
+          onChange={({ target }) => setAuthor(target.value)}
+        />
+        <p>url:</p>
+        <input
+          type='text'
+          value={url}
+          name='Url'
+          onChange={({ target }) => setUrl(target.value)}
+        />
+      </div>
+      <button type='submit'>create</button>
+    </form>
+  )
+
+  const handleCreate = async (event) => {
+    event.preventDefault()
+    try {
+      const blog = await blogService.create({
+        title,
+        author,
+        url,
+      })
+      console.log('Blog: ', blog)
+      setBlogs(blogs.concat(blog))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+    } catch (exception) {
+      setErrorMessage('Wrong')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogUser')
     window.location.reload(false)
@@ -86,6 +144,7 @@ const App = () => {
       <button type='submit' onClick={handleLogout}>
         logout
       </button>
+      {createForm()}
       {blogForm()}
     </div>
   )
