@@ -16,14 +16,6 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
 
   /**
-   * useStates for creating a new blog
-   */
-
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-
-  /**
    * Refs
    */
 
@@ -88,16 +80,16 @@ const App = () => {
     </form>
   )
 
-  const handleCreate = async (event) => {
-    event.preventDefault()
+  const createBlog = async (blogObject) => {
     try {
+      console.log('Blog: ', blogObject)
       blogFormRef.current.toggleVisibility()
       const blog = await blogService.create({
-        title,
-        author,
-        url,
+        title: blogObject.title,
+        author: blogObject.author,
+        url: blogObject.url,
       })
-      console.log('Blog: ', blog)
+
       setBlogs(blogs.concat(blog))
 
       setErrorMessage(`a new blog ${blog.title} by ${blog.author} added`)
@@ -105,9 +97,6 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
     } catch (exception) {
       setErrorMessage('Blog not added')
       setTimeout(() => {
@@ -130,15 +119,7 @@ const App = () => {
         logout
       </button>
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
-        <CreateForm
-          title={title}
-          author={author}
-          url={url}
-          handleTitleChange={({ target }) => setTitle(target.value)}
-          handleAuthorChange={({ target }) => setAuthor(target.value)}
-          handleUrlChange={({ target }) => setUrl(target.value)}
-          handleSubmit={handleCreate}
-        />
+        <CreateForm createBlog={createBlog} />
       </Togglable>
       {blogForm()}
     </div>
