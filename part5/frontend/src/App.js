@@ -105,12 +105,56 @@ const App = () => {
     }
   }
 
+  const likeBlog = async (likeObject) => {
+    try {
+      console.log('Blog: ', likeObject)
+
+      const id = likeObject.id
+      const blog = await blogService.update(id, {
+        title: likeObject.title,
+        author: likeObject.author,
+        url: likeObject.url,
+        likes: likeObject.likes,
+        user: likeObject.user,
+      })
+
+      console.log('New Blog', blog)
+
+      const newBlogs = blogs.map((item) => {
+        if (item.id === id) {
+          const updatedItem = {
+            ...item,
+            likes: blog.likes,
+          }
+          return updatedItem
+        }
+        return item
+      })
+
+      setBlogs(newBlogs)
+
+      setErrorMessage(`a new like added`)
+
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    } catch (exception) {
+      setErrorMessage('Blog not updated')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogUser')
     window.location.reload(false)
   }
 
-  const blogForm = () => blogs.map((blog) => <Blog key={blog.id} blog={blog} />)
+  const blogForm = () =>
+    blogs.map((blog) => (
+      <Blog key={blog.id} blog={blog} createLike={likeBlog} />
+    ))
 
   const wholeForm = () => (
     <div>
