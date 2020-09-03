@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
-
+import CreateForm from './components/CreateForm'
+import Togglable from './components/Togglable'
 // Services
 
 import blogService from './services/blogs'
@@ -21,6 +22,12 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+
+  /**
+   * Refs
+   */
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -81,38 +88,10 @@ const App = () => {
     </form>
   )
 
-  const createForm = () => (
-    <form onSubmit={handleCreate}>
-      <div>
-        <p>title:</p>
-        <input
-          type='text'
-          value={title}
-          name='Title'
-          onChange={({ target }) => setTitle(target.value)}
-        />
-        <p>author:</p>
-        <input
-          type='text'
-          value={author}
-          name='Author'
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-        <p>url:</p>
-        <input
-          type='text'
-          value={url}
-          name='Url'
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
-      <button type='submit'>create</button>
-    </form>
-  )
-
   const handleCreate = async (event) => {
     event.preventDefault()
     try {
+      blogFormRef.current.toggleVisibility()
       const blog = await blogService.create({
         title,
         author,
@@ -150,7 +129,17 @@ const App = () => {
       <button type='submit' onClick={handleLogout}>
         logout
       </button>
-      {createForm()}
+      <Togglable buttonLabel='new blog' ref={blogFormRef}>
+        <CreateForm
+          title={title}
+          author={author}
+          url={url}
+          handleTitleChange={({ target }) => setTitle(target.value)}
+          handleAuthorChange={({ target }) => setAuthor(target.value)}
+          handleUrlChange={({ target }) => setUrl(target.value)}
+          handleSubmit={handleCreate}
+        />
+      </Togglable>
       {blogForm()}
     </div>
   )
