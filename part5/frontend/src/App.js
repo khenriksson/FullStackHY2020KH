@@ -111,7 +111,7 @@ const App = () => {
       console.log('User:', user)
 
       if (window.confirm('Are you sure you want to delete this?')) {
-        const blog = await blogService.remove(blogObject.id)
+        await blogService.remove(blogObject.id)
         setBlogs(blogs.filter((blog) => blog.id !== blogObject.id))
         setErrorMessage(` blog removed`)
 

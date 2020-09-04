@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import Togglable from './Togglable'
+import PropTypes from 'prop-types'
+
 const Blog = ({ blog, createLike, removeBlog, user }) => {
   const blogStyle = {
     paddingTop: 10,
@@ -10,6 +12,10 @@ const Blog = ({ blog, createLike, removeBlog, user }) => {
   }
 
   const [likes, addLike] = useState(blog.likes)
+
+  Blog.propTypes = {
+    blog: PropTypes.object.isRequired,
+  }
 
   const addingLike = (event) => {
     event.preventDefault()
