@@ -151,10 +151,17 @@ const App = () => {
     window.location.reload(false)
   }
 
-  const blogForm = () =>
-    blogs.map((blog) => (
+  const blogForm = () => {
+    console.log('Blogs: ', blogs)
+    const copied = [...blogs]
+    console.log('Copied: ', copied)
+    const sorted = copied.sort((a, b) => b.likes - a.likes)
+    console.log('Sorted: ', sorted)
+    // setBlogs(sorted)
+    return sorted.map((blog) => (
       <Blog key={blog.id} blog={blog} createLike={likeBlog} />
     ))
+  }
 
   const wholeForm = () => (
     <div>
