@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Togglable from './Togglable'
-const Blog = ({ blog, createLike }) => {
+const Blog = ({ blog, createLike, removeBlog, user }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -27,6 +27,15 @@ const Blog = ({ blog, createLike }) => {
     addLike(newLikes)
   }
 
+  const deleteBlog = (event) => {
+    event.preventDefault()
+
+    removeBlog({
+      id: blog.id,
+      user: blog.user,
+    })
+  }
+
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}
@@ -34,6 +43,11 @@ const Blog = ({ blog, createLike }) => {
         <p> {blog.url}</p>
         likes {blog.likes} <button onClick={addingLike}>like</button>
         <p> {blog.user.name}</p>
+        {blog.user.username === user.username ? (
+          <button onClick={deleteBlog}>Remove blog</button>
+        ) : (
+          ''
+        )}
       </Togglable>
     </div>
   )

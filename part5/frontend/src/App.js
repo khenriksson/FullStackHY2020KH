@@ -105,6 +105,28 @@ const App = () => {
     }
   }
 
+  const removeBlog = async (blogObject) => {
+    try {
+      console.log('Blog: ', blogObject)
+      console.log('User:', user)
+
+      if (window.confirm('Are you sure you want to delete this?')) {
+        const blog = await blogService.remove(blogObject.id)
+        setBlogs(blogs.filter((blog) => blog.id !== blogObject.id))
+        setErrorMessage(` blog removed`)
+
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+    } catch {
+      setErrorMessage('Blog not removed')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const likeBlog = async (likeObject) => {
     try {
       console.log('Blog: ', likeObject)
@@ -152,14 +174,17 @@ const App = () => {
   }
 
   const blogForm = () => {
-    console.log('Blogs: ', blogs)
     const copied = [...blogs]
-    console.log('Copied: ', copied)
     const sorted = copied.sort((a, b) => b.likes - a.likes)
-    console.log('Sorted: ', sorted)
     // setBlogs(sorted)
     return sorted.map((blog) => (
-      <Blog key={blog.id} blog={blog} createLike={likeBlog} />
+      <Blog
+        key={blog.id}
+        blog={blog}
+        createLike={likeBlog}
+        removeBlog={removeBlog}
+        user={user}
+      />
     ))
   }
 
