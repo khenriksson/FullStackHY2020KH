@@ -11,6 +11,8 @@ const Togglable = React.forwardRef((props, ref) => {
     buttonLabel: PropTypes.string.isRequired,
   }
 
+  Togglable.displayName = 'Togglable'
+
   const toggleVisibility = () => {
     setVisible(!visible)
   }

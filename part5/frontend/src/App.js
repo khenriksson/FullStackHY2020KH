@@ -113,13 +113,13 @@ const App = () => {
       if (window.confirm('Are you sure you want to delete this?')) {
         await blogService.remove(blogObject.id)
         setBlogs(blogs.filter((blog) => blog.id !== blogObject.id))
-        setErrorMessage(` blog removed`)
+        setErrorMessage('blog removed')
 
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
       }
-    } catch {
+    } catch (exception) {
       setErrorMessage('Blog not removed')
       setTimeout(() => {
         setErrorMessage(null)
@@ -155,7 +155,7 @@ const App = () => {
 
       setBlogs(newBlogs)
 
-      setErrorMessage(`a new like added`)
+      setErrorMessage('a new like added')
 
       setTimeout(() => {
         setErrorMessage(null)
