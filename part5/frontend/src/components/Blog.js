@@ -20,7 +20,7 @@ const Blog = ({ blog, createLike, removeBlog, user }) => {
   const addingLike = (event) => {
     event.preventDefault()
     const newLikes = likes + 1
-    // console.log('User in Blog', blog.user)
+    console.log('User in Blog', user)
     createLike({
       title: blog.title,
       author: blog.author,
@@ -43,7 +43,7 @@ const Blog = ({ blog, createLike, removeBlog, user }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='renderBlogTest'>
       {blog.title} {blog.author}
       <Togglable buttonLabel='view'>
         <p> {blog.url}</p>
