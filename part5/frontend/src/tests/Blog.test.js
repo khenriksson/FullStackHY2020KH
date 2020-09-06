@@ -39,3 +39,15 @@ test('', () => {
   expect(togglable).toHaveStyle('display: block')
   expect(component.container).toHaveTextContent(blog.url, blog.likes)
 })
+
+test('ensure like is clicked twice', () => {
+  const mockHandler = jest.fn()
+  const component = render(
+    <Blog blog={blog} user={user} createLike={mockHandler} />,
+  )
+  const button = component.getByText('like')
+
+  fireEvent.click(button)
+  fireEvent.click(button)
+  expect(mockHandler.mock.calls).toHaveLength(2)
+})
