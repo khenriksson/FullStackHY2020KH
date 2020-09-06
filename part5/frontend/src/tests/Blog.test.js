@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import Blog from '../components/Blog'
 
 let component
@@ -20,13 +20,22 @@ const blog = {
   user: user,
 }
 
-beforeEach(() => {
-  component = render(<Blog blog={blog} user={user} />)
-})
+beforeEach(() => {})
 
-test('renders its children', () => {
+test('does not show url and likes, but shows title and author', () => {
+  const component = render(<Blog blog={blog} user={user} />)
   const togglable = component.container.querySelector('.togglableContent')
   expect(togglable).toHaveStyle('display: none')
-
+  component.debug()
   expect(component.container).toHaveTextContent(blog.title, blog.author)
+})
+
+test('', () => {
+  const component = render(<Blog blog={blog} user={user} />)
+  const button = component.getByText('view')
+
+  fireEvent.click(button)
+  const togglable = component.container.querySelector('.togglableContent')
+  expect(togglable).toHaveStyle('display: block')
+  expect(component.container).toHaveTextContent(blog.url, blog.likes)
 })
