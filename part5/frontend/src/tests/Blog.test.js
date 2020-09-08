@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
 import Blog from '../components/Blog'
 
-let component
+// let component
 
 const user = {
   name: 'Kasper Henriksson',
@@ -30,7 +30,7 @@ test('does not show url and likes, but shows title and author', () => {
   expect(component.container).toHaveTextContent(blog.title, blog.author)
 })
 
-test('', () => {
+test('Testing if url and likes is shown', () => {
   const component = render(<Blog blog={blog} user={user} />)
   const button = component.getByText('view')
 

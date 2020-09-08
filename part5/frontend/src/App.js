@@ -176,6 +176,7 @@ const App = () => {
   const blogForm = () => {
     const copied = [...blogs]
     const sorted = copied.sort((a, b) => b.likes - a.likes)
+    console.log('User', user)
     // setBlogs(sorted)
     return sorted.map((blog) => (
       <Blog
@@ -190,7 +191,7 @@ const App = () => {
 
   const wholeForm = () => (
     <div>
-      <p>{user.username} logged in</p>{' '}
+      <p>{user.name} logged in</p>{' '}
       <button type='submit' onClick={handleLogout}>
         logout
       </button>

@@ -41,7 +41,7 @@ const Blog = ({ blog, createLike, removeBlog, user }) => {
       user: blog.user,
     })
   }
-
+  console.log('BLOG', blog)
   return (
     <div style={blogStyle} className='renderBlogTest'>
       {blog.title} {blog.author}
