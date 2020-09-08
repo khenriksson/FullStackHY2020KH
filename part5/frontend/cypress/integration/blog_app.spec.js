@@ -87,7 +87,7 @@ describe('Blog app', function () {
       cy.should('not.contain', 'cypress deleting')
     })
 
-    it.only('A blog cant be deleted by other user', function () {
+    it('A blog cant be deleted by other user', function () {
       cy.createBlog({
         title: 'cypress-deleting',
         author: 'cypress',
@@ -100,6 +100,42 @@ describe('Blog app', function () {
       cy.contains('cypress-deleting')
         .parent()
         .should('not.contain', 'Remove blog')
+    })
+  })
+
+  describe('ordering is right', function () {
+    beforeEach(function () {
+      cy.request('POST', 'http://localhost:3001/api/login', {
+        username: 'khenriksson',
+        password: 'secret',
+      }).then((response) => {
+        localStorage.setItem('loggedBlogUser', JSON.stringify(response.body))
+        cy.visit('http://localhost:3000')
+      })
+    })
+
+    it.only('likes are rightly ordered', function () {
+      cy.createBlog({
+        title: 'first blog',
+        author: 'cypress',
+        url: 'not needed',
+      })
+      cy.createBlog({
+        title: 'second blog',
+        author: 'cypress',
+        url: 'not needed',
+        likes: 4,
+      })
+      cy.createBlog({
+        title: 'third blog',
+        author: 'cypress',
+        url: 'not needed',
+        likes: 3,
+      })
+
+      cy.get('.renderBlogTest').eq(0).should('contain', 4)
+      cy.get('.renderBlogTest').eq(1).should('contain', 3)
+      cy.get('.renderBlogTest').eq(2).should('contain', 0)
     })
   })
 })
