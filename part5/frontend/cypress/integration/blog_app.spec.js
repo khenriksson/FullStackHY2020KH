@@ -10,7 +10,7 @@ describe('Blog app', function () {
     cy.visit('http://localhost:3000')
   })
 
-  it.only('front page contains login', function () {
+  it('Login form is shown', function () {
     cy.contains('blogs')
     cy.get('#username').should('be.visible')
     cy.get('#password').should('be.visible')
@@ -20,12 +20,21 @@ describe('Blog app', function () {
     cy.contains('view').click()
   })
 
-  it('user can login', function () {
-    cy.get('#username').type('khenriksson')
-    cy.get('#password').type('secret')
-    cy.get('#login-button').click()
+  describe.only('Login', function () {
+    it('succeeds with correct credentials', function () {
+      cy.get('#username').type('khenriksson')
+      cy.get('#password').type('secret')
+      cy.get('#login-button').click()
 
-    cy.contains('Kasper Henriksson logged in')
+      cy.contains('Kasper Henriksson logged in')
+    })
+    it('fails with wrong credentials', function () {
+      cy.get('#username').type('khenriksso')
+      cy.get('#password').type('secret')
+      cy.get('#login-button').click()
+
+      cy.get('.success').contains('wrong username or password')
+    })
   })
 
   it('a new blog can be create', function () {
