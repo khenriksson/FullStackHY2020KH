@@ -1,3 +1,10 @@
 {
-  "workbench.colorTheme": "Monokai"
+  "workbench.colorTheme": "Monokai",
+  "eslint.workingDirectories": ["./backend", "./frontend"],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "html",
+    "typescriptreact"
+  ]
 }
