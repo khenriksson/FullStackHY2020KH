@@ -18,6 +18,7 @@ const AnecdoteList = () => {
       return state.anecdotes
     }
   })
+
   const dispatch = useDispatch()
 
   const vote = (id) => {
@@ -36,6 +37,7 @@ const AnecdoteList = () => {
   return (
     <>
       <Filter />
+
       {anecdotes.map((anecdote) => (
         <div key={anecdote.id}>
           <div>{anecdote.content}</div>
