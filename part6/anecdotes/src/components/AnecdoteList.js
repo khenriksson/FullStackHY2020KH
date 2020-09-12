@@ -5,9 +5,19 @@ import {
   notificationAction,
   removeAction,
 } from '../reducers/notificationReducer'
+import Filter from '../components/Filter'
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state.anecdotes)
+  const filter = useSelector((state) => state.filter)
+  const anecdotes = useSelector((state) => {
+    if (filter !== '') {
+      return state.anecdotes.filter((x) =>
+        x.content.toLowerCase().includes(filter.toLowerCase()),
+      )
+    } else {
+      return state.anecdotes
+    }
+  })
   const dispatch = useDispatch()
 
   const vote = (id) => {
@@ -23,15 +33,20 @@ const AnecdoteList = () => {
     }, 5000)
   }
 
-  return anecdotes.map((anecdote) => (
-    <div key={anecdote.id}>
-      <div>{anecdote.content}</div>
-      <div>
-        has {anecdote.votes}
-        <button onClick={() => vote(anecdote.id)}>vote</button>
-      </div>
-    </div>
-  ))
+  return (
+    <>
+      <Filter />
+      {anecdotes.map((anecdote) => (
+        <div key={anecdote.id}>
+          <div>{anecdote.content}</div>
+          <div>
+            has {anecdote.votes}
+            <button onClick={() => vote(anecdote.id)}>vote</button>
+          </div>
+        </div>
+      ))}
+    </>
+  )
 }
 
 export default AnecdoteList
