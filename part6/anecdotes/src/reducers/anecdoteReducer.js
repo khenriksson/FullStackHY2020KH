@@ -37,7 +37,8 @@ const reducer = (state = initialState, action) => {
         }
         return anecdote
       })
-      return newState
+      const sorted = newState.sort((a, b) => b.votes - a.votes)
+      return sorted
     }
     case 'CREATE_ACTION': {
       const anecdote = action.data.content
