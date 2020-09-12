@@ -41,6 +41,7 @@ const anecdoteReducer = (state = initialState, action) => {
       return sorted
     }
     case 'CREATE_ACTION': {
+      console.log(action.data)
       const anecdote = action.data.content
       console.log('ANECDOTE IN CREATE ACTION', anecdote)
       const addingAnecdote = {

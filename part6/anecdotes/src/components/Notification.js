@@ -1,9 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import notificationAction from '../reducers/notificationReducer'
 
 const Notification = () => {
   const notification = useSelector((state) => state.notification)
+  console.log('notification', notification)
   const style = {
     border: 'solid',
     padding: 10,

@@ -1,5 +1,5 @@
 const initialState = {
-  notification: 'Serve',
+  notification: '',
 }
 // const getId = () => (100000 * Math.random()).toFixed(0)
 // const initialState = anecdotesAtStart.map(asObject)
@@ -13,21 +13,26 @@ const initialState = {
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ERROR_MESSAGE': {
-      const message = action.data.notification
-      const returned = (state.notification = message)
-      return returned
+      return action.data
+    }
+    case 'REMOVE_MESSAGE': {
+      return ''
     }
     default:
-      return state.notification
+      return ''
   }
 }
 
-export const notificationAction = (id) => {
+export const notificationAction = (data) => {
   return {
     type: 'ERROR_MESSAGE',
-    data: {
-      notification: "Not sure if it's working",
-    },
+    data: data,
+  }
+}
+
+export const removeAction = () => {
+  return {
+    type: 'REMOVE_MESSAGE',
   }
 }
 
