@@ -10,15 +10,14 @@ import anecdoteService from '../services/anecdotes'
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
 
-  const getId = () => (100000 * Math.random()).toFixed(0)
-
   const create = async (event) => {
     event.preventDefault()
     const content = event.target.createAnecdote.value
     event.target.createAnecdote.value = ''
-    const votes = 0
-    const id = getId()
-    const newAnecdote = await anecdoteService.createNew(content, id, votes)
+
+    const newAnecdote = {
+      content: content,
+    }
     console.log('NEW ANECDOTE', newAnecdote)
     dispatch(createAction(newAnecdote))
     dispatch(notificationAction(`you added '${content}'`))

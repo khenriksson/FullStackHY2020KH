@@ -1,3 +1,5 @@
+import anecdoteService from '../services/anecdotes'
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -46,13 +48,14 @@ const anecdoteReducer = (state = [], action) => {
       console.log('ANECDOTE IN CREATE ACTION', anecdote)
       const addingAnecdote = {
         content: anecdote,
-        id: action.data.id,
-        votes: action.data.votes,
+        id: getId(),
+        votes: 0,
       }
       return state.concat(addingAnecdote)
     }
     case 'INIT_ANECDOTES': {
-      return action.data
+      const sorted = action.data.sort((a, b) => b.votes - a.votes)
+      return sorted
     }
     default:
       return state
@@ -71,16 +74,17 @@ export const voteAction = (id) => {
 export const createAction = (data) => {
   return {
     type: 'CREATE_ACTION',
-    data: {
-      content: data.content,
-    },
+    data,
   }
 }
 
 export const initializeAnecdotes = (anecdotes) => {
-  return {
-    type: 'INIT_ANECDOTES',
-    data: anecdotes,
+  return async (dispatch) => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch({
+      type: 'INIT_ANECDOTES',
+      data: anecdotes,
+    })
   }
 }
 
