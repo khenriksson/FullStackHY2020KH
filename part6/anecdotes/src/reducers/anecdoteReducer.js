@@ -39,6 +39,16 @@ const reducer = (state = initialState, action) => {
       })
       return newState
     }
+    case 'CREATE_ACTION': {
+      const anecdote = action.data.content
+      console.log('ANECDOTE IN CREATE ACTION', anecdote)
+      const addingAnecdote = {
+        content: anecdote,
+        id: getId(),
+        votes: 0,
+      }
+      return state.concat(addingAnecdote)
+    }
     default:
       return state
   }
