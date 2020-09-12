@@ -48,8 +48,8 @@ const anecdoteReducer = (state = [], action) => {
       console.log('ANECDOTE IN CREATE ACTION', anecdote)
       const addingAnecdote = {
         content: anecdote,
-        id: getId(),
-        votes: 0,
+        id: action.data.id,
+        votes: action.data.votes,
       }
       return state.concat(addingAnecdote)
     }
@@ -71,10 +71,11 @@ export const voteAction = (id) => {
   }
 }
 
-export const createAction = (data) => {
-  return {
-    type: 'CREATE_ACTION',
-    data,
+export const createAction = (content) => {
+  return async (dispatch) => {
+    const id = getId()
+    const data = await anecdoteService.createNew(content.content, id, 0)
+    dispatch({ type: 'CREATE_ACTION', data })
   }
 }
 
