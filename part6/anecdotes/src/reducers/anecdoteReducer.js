@@ -63,11 +63,23 @@ const anecdoteReducer = (state = [], action) => {
 }
 
 export const voteAction = (id) => {
-  return {
-    type: 'VOTE_ACTION',
-    data: {
-      id: id,
-    },
+  return async (dispatch, getState) => {
+    const state = getState()
+    console.log('STATE:', state.anecdotes)
+    const anecdote = state.anecdotes.find((x) => x.id === id)
+    console.log('ANECDOTE IN VOTE', anecdote)
+    const newObject = {
+      content: anecdote.content,
+      votes: anecdote.votes + 1,
+      id: anecdote.id,
+    }
+    const data = await anecdoteService.update(id, newObject)
+    dispatch({
+      type: 'VOTE_ACTION',
+      data: {
+        id: id,
+      },
+    })
   }
 }
 
