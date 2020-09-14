@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect, mapSta } from 'react-redux'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { voteAction } from '../reducers/anecdoteReducer'
 import { notificationAction } from '../reducers/notificationReducer'
 import Filter from '../components/Filter'
@@ -19,8 +19,8 @@ const AnecdoteList = (props) => {
   const dispatch = useDispatch()
 
   const vote = (anecdote) => {
-    dispatch(voteAction(anecdote))
-    dispatch(notificationAction(`you voted ${anecdote.content}`, 10))
+    props.voteAction(anecdote)
+    props.notificationAction(`you voted ${anecdote.content}`, 10)
   }
 
   return (
@@ -39,6 +39,10 @@ const AnecdoteList = (props) => {
     </>
   )
 }
+const mapDispatchToProps = {
+  voteAction,
+  notificationAction,
+}
 
 const mapStateToProps = (state) => {
   // sometimes it is useful to console log from mapStateToProps
@@ -50,5 +54,8 @@ const mapStateToProps = (state) => {
   }
 }
 
-const ConnectedAnecdotes = connect(mapStateToProps)(AnecdoteList)
+const ConnectedAnecdotes = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AnecdoteList)
 export default ConnectedAnecdotes
