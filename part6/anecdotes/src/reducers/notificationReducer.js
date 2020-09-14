@@ -1,6 +1,4 @@
-const initialState = {
-  notification: null,
-}
+const initialState = null
 
 export const notificationAction = (data, seconds) => {
   console.log('SECONDS BEFORE', seconds)
@@ -19,7 +17,7 @@ export const notificationAction = (data, seconds) => {
   }
 }
 
-const notificationReducer = (state = initialState.notification, action) => {
+const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ERROR_MESSAGE': {
       return action.data
