@@ -1,10 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { createAction } from '../reducers/anecdoteReducer'
-import {
-  notificationAction,
-  removeAction,
-} from '../reducers/notificationReducer'
+import { notificationAction } from '../reducers/notificationReducer'
 import anecdoteService from '../services/anecdotes'
 
 const AnecdoteForm = () => {
@@ -18,13 +15,9 @@ const AnecdoteForm = () => {
     const newAnecdote = {
       content: content,
     }
-    console.log('NEW ANECDOTE', newAnecdote)
+
     dispatch(createAction(newAnecdote))
-    dispatch(notificationAction(`you added '${content}'`))
-    setTimeout(() => {
-      dispatch(removeAction())
-    }, 5000)
-    console.log('DATA IN CREATE', content)
+    dispatch(notificationAction(`you added '${content}'`, 10))
   }
 
   return (

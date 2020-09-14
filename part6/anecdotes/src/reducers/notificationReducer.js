@@ -1,16 +1,25 @@
 const initialState = {
-  notification: '',
+  notification: null,
 }
-// const getId = () => (100000 * Math.random()).toFixed(0)
-// const initialState = anecdotesAtStart.map(asObject)
-// const asObject = (notification) => {
-//   return {
-//     notification: notification,
-//     id: getId(),
-//   }
-// }
 
-const notificationReducer = (state = initialState, action) => {
+export const notificationAction = (data, seconds) => {
+  console.log('SECONDS BEFORE', seconds)
+  return (dispatch) => {
+    // const send = await anecdoteService.post(data)
+    console.log('DATA ', data)
+    dispatch({
+      type: 'ERROR_MESSAGE',
+      data: data,
+    })
+    setTimeout(() => {
+      dispatch({
+        type: 'REMOVE_MESSAGE',
+      })
+    }, seconds * 1000)
+  }
+}
+
+const notificationReducer = (state = initialState.notification, action) => {
   switch (action.type) {
     case 'ERROR_MESSAGE': {
       return action.data
@@ -19,20 +28,7 @@ const notificationReducer = (state = initialState, action) => {
       return ''
     }
     default:
-      return ''
-  }
-}
-
-export const notificationAction = (data) => {
-  return {
-    type: 'ERROR_MESSAGE',
-    data: data,
-  }
-}
-
-export const removeAction = () => {
-  return {
-    type: 'REMOVE_MESSAGE',
+      return state
   }
 }
 

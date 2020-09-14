@@ -2,101 +2,106 @@
   "anecdotes": [
     {
       "content": "If it hurts, do it more often",
-      "votes": 1,
+      "votes": 10,
       "id": "1"
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
-      "id": "2",
-      "votes": 0
+      "votes": 13,
+      "id": "2"
     },
     {
       "content": "The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
-      "id": "3",
-      "votes": 0
+      "votes": 21,
+      "id": "3"
     },
     {
-      "content": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
-      "id": "4",
-      "votes": 0
+      "votes": 27,
+      "id": "4"
     },
     {
       "content": "Premature optimization is the root of all evil.",
-      "id": "5",
-      "votes": 0
+      "votes": 10,
+      "id": "5"
     },
     {
       "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
-      "votes": 2,
+      "votes": 16,
       "id": "6"
     },
     {
       "content": "add",
-      "id": "BBTgV3w",
-      "votes": "46495"
+      "votes": "464951111111",
+      "id": "BBTgV3w"
+    },
+    {
+      "votes": "292341111111111111",
+      "id": "wCRwCkw"
     },
     {
       "content": "test",
-      "id": "wCRwCkw",
-      "votes": "29234"
-    },
-    {
-      "content": "test",
-      "id": "7j6qOMR",
-      "votes": "94231"
+      "votes": "942311111111",
+      "id": "7j6qOMR"
     },
     {
       "content": "testing",
-      "id": "12804",
-      "votes": 0
+      "votes": 10,
+      "id": "12804"
     },
     {
       "content": "texting",
-      "id": "57730",
-      "votes": 0
+      "votes": 6,
+      "id": "57730"
     },
     {
       "content": "test",
-      "votes": 2,
+      "votes": 30,
       "id": "14755"
     },
     {
       "content": "test",
+      "votes": 3,
       "id": "EnrsQ_k"
     },
     {
       "content": "sdfsd",
+      "votes": null,
       "id": "gPPd0MI"
     },
     {
       "content": "sdfs",
+      "votes": null,
       "id": "dzCAiuS"
     },
     {
       "content": "sdfds",
+      "votes": null,
       "id": "7K08Rpk"
     },
     {
       "content": "sdfsdf",
+      "votes": null,
       "id": "mgx6bX6"
     },
     {
       "content": "sdfsf",
+      "votes": 8,
       "id": "XFDQqXv"
     },
     {
       "content": "asdasd",
+      "votes": 1,
       "id": "1jsFTmG"
     },
     {
       "content": "sdfsf",
-      "id": "67881",
-      "votes": 0
+      "votes": 2,
+      "id": "67881"
     },
     {
       "content": "sdffs",
-      "id": "1253",
-      "votes": 0
+      "votes": 5,
+      "id": "1253"
     },
     {
       "content": "sdfs",
@@ -105,17 +110,26 @@
     },
     {
       "content": "sdfds",
-      "id": "18600",
-      "votes": 0
+      "votes": 5,
+      "id": "18600"
     },
     {
       "content": "sdfsdf",
-      "id": "6175",
-      "votes": 0
+      "votes": 1,
+      "id": "6175"
     },
     {
       "content": "Does it work",
-      "id": "95608",
+      "votes": 10,
+      "id": "95608"
+    },
+    {
+      "votes": 1,
+      "id": "55204"
+    },
+    {
+      "content": "testing",
+      "id": "26613",
       "votes": 0
     }
   ]
