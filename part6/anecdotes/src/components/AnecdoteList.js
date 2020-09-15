@@ -17,7 +17,7 @@ const AnecdoteList = (props) => {
 
   const vote = (anecdote) => {
     props.voteAction(anecdote)
-    props.notificationAction(`you voted ${anecdote.content}`, 10)
+    props.notificationAction(`you voted ${anecdote.content}`, 3)
   }
 
   return (
