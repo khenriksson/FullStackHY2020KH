@@ -1,6 +1,5 @@
 import React from 'react'
-import { connect, mapSta } from 'react-redux'
-import { useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { voteAction } from '../reducers/anecdoteReducer'
 import { notificationAction } from '../reducers/notificationReducer'
 import Filter from '../components/Filter'
@@ -15,8 +14,6 @@ const AnecdoteList = (props) => {
       return props.anecdotes
     }
   }
-
-  const dispatch = useDispatch()
 
   const vote = (anecdote) => {
     props.voteAction(anecdote)
