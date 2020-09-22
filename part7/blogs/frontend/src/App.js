@@ -5,20 +5,22 @@ import CreateForm from './components/CreateForm'
 import Togglable from './components/Togglable'
 import { useSelector, useDispatch } from 'react-redux'
 import { notificationAction } from './reducers/notificationReducer'
-import { initAction, createAction, likeAction, deleteAction } from './reducers/blogReducer'
-import {userAction} from './reducers/userReducer'
+import {
+  initAction,
+  createAction,
+  likeAction,
+  deleteAction,
+} from './reducers/blogReducer'
+import { userAction } from './reducers/userReducer'
 // Services
 
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
-  //   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-//   const [user, setUser] = useState(null)
-  const user = useSelector(state => state.user)
-
+  const user = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const errorMessage = useSelector((state) => state.notification)
   const blogs = useSelector((state) => state.blogs)
@@ -37,7 +39,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-dispatch(userAction(user))
+      dispatch(userAction(user))
       blogService.setToken(user.token)
     }
   }, [dispatch])
@@ -52,7 +54,7 @@ dispatch(userAction(user))
 
       window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
       blogService.setToken(user.token)
-dispatch(userAction(user))
+      dispatch(userAction(user))
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -97,8 +99,8 @@ dispatch(userAction(user))
         url: blogObject.url,
       })
 
-          //   setBlogs(blogs.concat(blog))
-          dispatch(createAction(blog))
+      //   setBlogs(blogs.concat(blog))
+      dispatch(createAction(blog))
 
       dispatch(
         notificationAction(
@@ -114,10 +116,8 @@ dispatch(userAction(user))
   const removeBlog = async (blogObject) => {
     try {
       if (window.confirm('Are you sure you want to delete this?')) {
-
-dispatch(deleteAction(blogObject))
-        dispatch(notificationAction('blog removed'), 5)
-
+        dispatch(deleteAction(blogObject))
+        dispatch(notificationAction('blog removed', 5))
       }
     } catch (exception) {
       dispatch(notificationAction('Blog not removed'), 3)
@@ -126,11 +126,7 @@ dispatch(deleteAction(blogObject))
 
   const likeBlog = async (likeObject) => {
     try {
-      const id = likeObject.id
-    
-          console.log('likeObject.likes :>> ', likeObject.likes);
-dispatch(likeAction(likeObject))
-console.log('likeObject.likes :>> ', likeObject.likes)
+      dispatch(likeAction(likeObject))
       dispatch(notificationAction('a new like added', 3))
     } catch (exception) {
       dispatch(notificationAction('Blog not updated', 3))

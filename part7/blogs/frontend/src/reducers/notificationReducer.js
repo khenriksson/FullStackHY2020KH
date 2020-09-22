@@ -3,11 +3,9 @@ const initialState = null
 let timeoutID
 
 export const notificationAction = (data, seconds) => {
-  console.log('SECONDS BEFORE', seconds)
-  return (dispatch) => {
-    // const send = await anecdoteService.post(data)
 
-    console.log('DATA ', data)
+  return (dispatch) => {
+
     window.clearTimeout(timeoutID)
     dispatch({
       type: 'ERROR_MESSAGE',
@@ -25,7 +23,7 @@ export const notificationAction = (data, seconds) => {
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ERROR_MESSAGE': {
-      console.log(action.data)
+
       return action.data
     }
     case 'REMOVE_MESSAGE': {

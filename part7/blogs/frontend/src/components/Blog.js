@@ -12,17 +12,13 @@ const Blog = ({ blog, createLike, removeBlog, user }) => {
     marginBottom: 5,
   }
 
-// const likes = useSelector(state => state.blog.likes)
-
   Blog.propTypes = {
     blog: PropTypes.object.isRequired,
   }
 
   const addingLike = (event) => {
     event.preventDefault()
-    createLike(
-      blog
-    )
+    createLike(blog)
   }
 
   const deleteBlog = (event) => {

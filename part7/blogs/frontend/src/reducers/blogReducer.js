@@ -27,10 +27,10 @@ export const likeAction = (blog) => {
       author: blog.author,
       user: blog.user,
     }
-    const data = await blogsService.update(blog.id, newObject)
+    await blogsService.update(blog.id, newObject)
     dispatch({
       type: 'LIKE_ACTION',
-      data: data,
+      data: newObject,
     })
   }
 }
@@ -57,13 +57,11 @@ const blogReducer = (state = [], action) => {
         }
         return blog
       })
-      // const sorted = [...newState].sort((a, b) => b.votes - a.votes)
       return newState
     }
     case 'DELETE_ACTION': {
-      return state.filter((blog) => blog.id !== action.data)
-
-      // const sorted = [...newState].sort((a, b) => b.votes - a.votes)
+      const newState = [...state].filter((blog) => blog.id !== action.data)
+      return newState
     }
     default:
       return state
