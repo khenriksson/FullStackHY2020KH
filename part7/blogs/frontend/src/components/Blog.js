@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Togglable from './Togglable'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 
 const Blog = ({ blog, createLike, removeBlog, user }) => {
   const blogStyle = {
@@ -11,7 +12,7 @@ const Blog = ({ blog, createLike, removeBlog, user }) => {
     marginBottom: 5,
   }
 
-  const [likes, addLike] = useState(blog.likes)
+// const likes = useSelector(state => state.blog.likes)
 
   Blog.propTypes = {
     blog: PropTypes.object.isRequired,
@@ -19,29 +20,19 @@ const Blog = ({ blog, createLike, removeBlog, user }) => {
 
   const addingLike = (event) => {
     event.preventDefault()
-    const newLikes = likes + 1
-    console.log('User in Blog', user)
-    createLike({
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: newLikes,
-      id: blog.id,
-      user: blog.user,
-    })
-
-    addLike(newLikes)
+    createLike(
+      blog
+    )
   }
 
   const deleteBlog = (event) => {
     event.preventDefault()
-
     removeBlog({
       id: blog.id,
       user: blog.user,
     })
   }
-  console.log('BLOG', blog)
+
   return (
     <div style={blogStyle} className='renderBlogTest'>
       {blog.title} {blog.author}

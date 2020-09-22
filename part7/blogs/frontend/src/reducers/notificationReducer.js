@@ -1,21 +1,3 @@
-
-
-// const notificationReducer = (state = null, action) => {
-//   switch (action.type) {
-//     case 'MESSAGE': {
-//       return action.data
-//     }
-//     default:
-//       return state
-//   }
-// }
-
-// export const notificationAction = (data) => {
-//   return { type: 'MESSAGE', data: data }
-// }
-
-// export default notificationReducer
-
 const initialState = null
 
 let timeoutID
