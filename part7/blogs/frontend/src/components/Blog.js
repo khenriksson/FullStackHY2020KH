@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Togglable from './Togglable'
 import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
 
 const Blog = ({ blog, createLike, removeBlog, user }) => {
   const blogStyle = {

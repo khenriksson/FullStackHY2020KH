@@ -29,7 +29,7 @@ const notificationReducer = (state = initialState, action) => {
       return action.data
     }
     case 'REMOVE_MESSAGE': {
-      return ''
+      return null
     }
     default:
       return state

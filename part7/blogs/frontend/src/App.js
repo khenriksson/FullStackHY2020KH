@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import CreateForm from './components/CreateForm'
 import Togglable from './components/Togglable'
+import Users from './components/Users'
 import { useSelector, useDispatch } from 'react-redux'
 import { notificationAction } from './reducers/notificationReducer'
 import {
@@ -12,10 +13,12 @@ import {
   deleteAction,
 } from './reducers/blogReducer'
 import { userAction } from './reducers/userReducer'
+import { Switch, Route, Link } from 'react-router-dom'
 // Services
 
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { initUsers } from './reducers/usersReducer'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -33,6 +36,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initAction())
+    dispatch(initUsers())
   }, [dispatch])
 
   useEffect(() => {
@@ -155,10 +159,6 @@ const App = () => {
 
   const wholeForm = () => (
     <div>
-      <p>{user.name} logged in</p>{' '}
-      <button type='submit' onClick={handleLogout}>
-        logout
-      </button>
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <CreateForm createBlog={createBlog} />
       </Togglable>
@@ -169,9 +169,26 @@ const App = () => {
   return (
     <div>
       <Notification message={errorMessage} />
+      <Link to='/'>home</Link>
+      <Link to='/users'>user</Link>
       <h2>blogs</h2>
+      {user !== null ? (
+        <div>
+          <p>{user.name} logged in</p>{' '}
+          <button type='submit' onClick={handleLogout}>
+            logout
+          </button>
+        </div>
+      ) : (
+        ''
+      )}
 
-      {user === null ? loginForm() : wholeForm()}
+      <Switch>
+        <Route path='/users'>
+          <Users />
+        </Route>
+        <Route path='/'>{user === null ? loginForm() : wholeForm()}</Route>
+      </Switch>
     </div>
   )
 }
