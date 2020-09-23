@@ -120,26 +120,6 @@ const App = () => {
     }
   }
 
-  const removeBlog = async (blogObject) => {
-    try {
-      if (window.confirm('Are you sure you want to delete this?')) {
-        dispatch(deleteAction(blogObject))
-        dispatch(notificationAction('blog removed', 5))
-      }
-    } catch (exception) {
-      dispatch(notificationAction('Blog not removed'), 3)
-    }
-  }
-
-  const likeBlog = async (likeObject) => {
-    try {
-      dispatch(likeAction(likeObject))
-      dispatch(notificationAction('a new like added', 3))
-    } catch (exception) {
-      dispatch(notificationAction('Blog not updated', 3))
-    }
-  }
-
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogUser')
     window.location.reload(false)
@@ -150,13 +130,16 @@ const App = () => {
     const sorted = copied.sort((a, b) => b.likes - a.likes)
 
     return sorted.map((blog) => (
-      <Blog
-        key={blog.id}
-        blog={blog}
-        createLike={likeBlog}
-        removeBlog={removeBlog}
-        user={user}
-      />
+      //   <Blog
+      //     key={blog.id}
+      //     blog={blog}
+      //     createLike={likeBlog}
+      //     removeBlog={removeBlog}
+      //     user={user}
+      //   />
+      <p>
+        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+      </p>
     ))
   }
 
@@ -183,17 +166,20 @@ const App = () => {
           </button>
         </div>
       ) : (
-        ''
+        loginForm()
       )}
 
       <Switch>
+        <Route path='/blogs/:id'>
+          <Blog />
+        </Route>
         <Route path='/users/:id'>
           <User />
         </Route>
         <Route path='/users'>
           <Users />
         </Route>
-        <Route path='/'>{user === null ? loginForm() : wholeForm()}</Route>
+        <Route path='/'>{user ? wholeForm() : ''}</Route>
       </Switch>
     </div>
   )
