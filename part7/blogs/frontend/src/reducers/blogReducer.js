@@ -21,12 +21,10 @@ export const createAction = (blog) => {
 export const likeAction = (blog) => {
   return async (dispatch) => {
     const newObject = {
-      title: blog.title,
+      ...blog,
       likes: blog.likes + 1,
-      id: blog.id,
-      author: blog.author,
-      user: blog.user,
     }
+
     await blogsService.update(blog.id, newObject)
     dispatch({
       type: 'LIKE_ACTION',

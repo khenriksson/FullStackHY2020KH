@@ -1,16 +1,9 @@
 import React from 'react'
-import Togglable from './Togglable'
-import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { notificationAction } from '../reducers/notificationReducer'
-import {
-  initAction,
-  createAction,
-  likeAction,
-  deleteAction,
-} from '../reducers/blogReducer'
+import { likeAction, deleteAction } from '../reducers/blogReducer'
 
 const Blog = () => {
   const dispatch = useDispatch()
@@ -24,16 +17,13 @@ const Blog = () => {
   const blogs = useSelector((state) => state.blogs)
   const user = useSelector((state) => state.user)
   const id = useParams().id
-  console.log('id :>> ', id)
-  console.log('blogs :>> ', blogs)
 
   const blog = blogs.find((n) => n.id === id)
 
-  console.log('blog :>> ', blog)
-
-  if (!blog) {
+  if (!blog || !user) {
     return null
   }
+  console.log(blog.url)
 
   const removeBlog = async (blogObject) => {
     try {
@@ -55,10 +45,6 @@ const Blog = () => {
     }
   }
 
-  Blog.propTypes = {
-    blog: PropTypes.object.isRequired,
-  }
-
   const addingLike = (event) => {
     event.preventDefault()
     likeBlog(blog)
@@ -74,20 +60,22 @@ const Blog = () => {
 
   return (
     <div style={blogStyle} className='renderBlogTest'>
-      {blog.title} {blog.author}
-      {/* <Togglable buttonLabel='view'> */}
-      <p> {blog.url}</p>
+      <h2>
+        {blog.title} {blog.author}
+      </h2>
+      <a href={blog.url}>
+        <p>{blog.url}</p>
+      </a>
       likes {blog.likes}{' '}
       <button id='likebutton' onClick={addingLike}>
         like
       </button>
-      <p> {blog.user.name}</p>
+      <p>added by {blog.user.name}</p>
       {blog.user.username === user.username ? (
         <button onClick={deleteBlog}>Remove blog</button>
       ) : (
         ''
       )}
-      {/* </Togglable> */}
     </div>
   )
 }
