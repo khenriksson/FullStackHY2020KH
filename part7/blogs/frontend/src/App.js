@@ -4,6 +4,7 @@ import Notification from './components/Notification'
 import CreateForm from './components/CreateForm'
 import Togglable from './components/Togglable'
 import Users from './components/Users'
+import User from './components/User'
 import { useSelector, useDispatch } from 'react-redux'
 import { notificationAction } from './reducers/notificationReducer'
 import {
@@ -14,6 +15,7 @@ import {
 } from './reducers/blogReducer'
 import { userAction } from './reducers/userReducer'
 import { Switch, Route, Link } from 'react-router-dom'
+
 // Services
 
 import blogService from './services/blogs'
@@ -24,6 +26,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const user = useSelector((state) => state.user)
+  const users = useSelector((state) => state.users)
   const dispatch = useDispatch()
   const errorMessage = useSelector((state) => state.notification)
   const blogs = useSelector((state) => state.blogs)
@@ -184,6 +187,9 @@ const App = () => {
       )}
 
       <Switch>
+        <Route path='/users/:id'>
+          <User />
+        </Route>
         <Route path='/users'>
           <Users />
         </Route>
