@@ -25,6 +25,8 @@ const Blog = () => {
   }
   console.log(blog.url)
 
+  console.log('blog :>> ', blog)
+
   const removeBlog = async (blogObject) => {
     try {
       if (window.confirm('Are you sure you want to delete this?')) {
@@ -76,6 +78,10 @@ const Blog = () => {
       ) : (
         ''
       )}
+      <h3>comments</h3>
+      {blog.comments.map((comment) => {
+        return <li>{comment.text}</li>
+      })}
     </div>
   )
 }

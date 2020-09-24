@@ -1,5 +1,5 @@
 const app = require('./app') // the actual Express application
-const http = require('http')
+const http = require('http') // To use the HTTP server and client one must require('http').
 const config = require('./utils/config')
 const logger = require('./utils/logger')
 
