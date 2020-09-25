@@ -83,8 +83,10 @@ blogsRouter.put('/:id', async (request, response) => {
   await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
   response.json(blog)
 })
+
 blogsRouter.put('/:id/comments', async (request, response) => {
   const body = request.body
+  console.log('body :>> ', body)
   // console.log(request, 'request')
   const blog = await Blog.findById(request.params.id)
 
@@ -94,13 +96,14 @@ blogsRouter.put('/:id/comments', async (request, response) => {
   console.log('blog.comments :>> ', blog.comments)
 
   //   const savedComment = await comment.save()
+  //   const savedComment = await comment.save()
 
   const updatedBlog = {
     title: blog.title,
     author: blog.author,
     url: blog.url,
     likes: blog.likes,
-    comments: blog.comments.concat(comment),
+    comments: body.comments,
   }
 
   await Blog.findByIdAndUpdate(request.params.id, updatedBlog, { new: true })

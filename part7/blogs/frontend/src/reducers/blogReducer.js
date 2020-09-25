@@ -40,6 +40,16 @@ export const deleteAction = (blog) => {
   }
 }
 
+export const commentAction = (data) => {
+  return async (dispatch) => {
+    await blogsService.comment(data.id, data)
+    dispatch({
+      type: 'COMMENT_ACTION',
+      data: data,
+    })
+  }
+}
+
 const blogReducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_BLOGS': {
@@ -59,6 +69,23 @@ const blogReducer = (state = [], action) => {
     }
     case 'DELETE_ACTION': {
       const newState = [...state].filter((blog) => blog.id !== action.data)
+      return newState
+    }
+    case 'COMMENT_ACTION': {
+      console.log('action.data :>> ', action.data)
+      const newState = state.map((blog) => {
+        if (blog.id === action.data.id) {
+          console.log(
+            'blog.id===action.data.id :>> ',
+            blog.id === action.data.id,
+          )
+          console.log('blog :>> ', blog)
+          console.log('action.data.comments :>> ', action.data.comments)
+
+          return (blog = action.data)
+        }
+        return blog
+      })
       return newState
     }
     default:

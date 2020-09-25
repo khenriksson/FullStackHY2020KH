@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { likeAction } from '../reducers/blogReducer'
 const baseUrl = '/api/blogs'
 
 let token = null
@@ -34,6 +35,13 @@ const update = async (id, newObject) => {
   return response.data
 }
 
+const comment = async (id, newObject) => {
+  //   const request = axios.put(`${baseUrl}/${id}`, newObject)
+  console.log('newObject :>> ', newObject)
+  const response = await axios.put(`${baseUrl}/${id}/comments`, newObject)
+  return response.data
+}
+
 const remove = async (id) => {
   const config = {
     headers: { Authorization: token },
@@ -43,4 +51,4 @@ const remove = async (id) => {
   return response.data
 }
 
-export default { getAll, create, setToken, getByUser, update, remove }
+export default { getAll, create, setToken, getByUser, update, remove, comment }

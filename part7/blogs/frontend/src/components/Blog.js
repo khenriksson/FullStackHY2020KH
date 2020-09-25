@@ -3,10 +3,17 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { notificationAction } from '../reducers/notificationReducer'
-import { likeAction, deleteAction } from '../reducers/blogReducer'
+import {
+  likeAction,
+  deleteAction,
+  commentAction,
+} from '../reducers/blogReducer'
+
+import useField from '../hooks/useField'
 
 const Blog = () => {
   const dispatch = useDispatch()
+  const commentInput = useField('text')
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -47,6 +54,18 @@ const Blog = () => {
     }
   }
 
+  const commentBlog = async (commentObject) => {
+    const comments = blog.comments.concat(commentObject)
+    const newObject = { ...blog, comments }
+    console.log('newObject :>> ', newObject)
+    try {
+      dispatch(commentAction(newObject))
+      dispatch(notificationAction('youcommented', 3))
+    } catch (exception) {
+      dispatch(notificationAction('Comment not added', 3))
+    }
+  }
+
   const addingLike = (event) => {
     event.preventDefault()
     likeBlog(blog)
@@ -57,6 +76,14 @@ const Blog = () => {
     removeBlog({
       id: blog.id,
       user: blog.user,
+    })
+  }
+
+  const addComment = (event) => {
+    event.preventDefault()
+    commentBlog({
+      id: blog.id,
+      text: commentInput.value,
     })
   }
 
@@ -79,6 +106,10 @@ const Blog = () => {
         ''
       )}
       <h3>comments</h3>
+      <form onSubmit={addComment}>
+        <input {...commentInput} />
+        <button>add comment</button>
+      </form>
       {blog.comments.map((comment) => {
         return <li>{comment.text}</li>
       })}
