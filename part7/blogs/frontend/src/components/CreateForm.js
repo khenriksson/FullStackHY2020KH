@@ -1,68 +1,47 @@
 import React, { useState } from 'react'
+import useField from '../hooks/useField'
+import { Button, TextField, Typography, Grid } from '@material-ui/core'
 
 const CreateForm = ({ createBlog }) => {
   /**
    * useStates for creating a new blog
    */
 
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value)
-  }
-  const handleAuthorChange = (event) => {
-    setAuthor(event.target.value)
-  }
-  const handleUrlChange = (event) => {
-    setUrl(event.target.value)
-  }
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
 
   const addBlog = (event) => {
     event.preventDefault()
     createBlog({
-      title: title,
-      author: author,
-      url: url,
+      title: title.value,
+      author: author.value,
+      url: url.value,
     })
-
-    setTitle('')
-    setAuthor('')
-    setUrl('')
   }
 
   return (
     <form onSubmit={addBlog} className='formDiv'>
-      <div>
-        <p>title:</p>
-        <input
-          id='title'
-          type='text'
-          value={title}
-          name='Title'
-          onChange={handleTitleChange}
-        />
-        <p>author:</p>
-        <input
-          id='author'
-          type='text'
-          value={author}
-          name='Author'
-          onChange={handleAuthorChange}
-        />
-        <p>url:</p>
-        <input
-          id='url'
-          type='text'
-          value={url}
-          name='Url'
-          onChange={handleUrlChange}
-        />
-      </div>
-      <button id='create' type='submit'>
-        create
-      </button>
+      <Grid container spacing={1} direction='column' alignItems='center'>
+        <Grid item direction='row'>
+          <Typography align='justify'>title:</Typography>
+          {/* <input {...title} /> */}
+          <TextField variant='outlined' margin='normal' {...title} />
+        </Grid>
+        <Grid item>
+          <Typography align='justify'>author:</Typography>
+          <TextField variant='outlined' margin='normal' {...author} />
+        </Grid>
+        <Grid item>
+          <Typography align='justify'>url:</Typography>
+          <TextField variant='outlined' margin='normal' {...url} />
+        </Grid>
+      </Grid>
+      <Grid item spacing={1}>
+        <Button variant='contained' color='primary' id='create' type='submit'>
+          create
+        </Button>
+      </Grid>
     </form>
   )
 }

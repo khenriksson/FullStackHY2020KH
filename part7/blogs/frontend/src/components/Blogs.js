@@ -6,6 +6,14 @@ import Togglable from '../components/Togglable'
 import { createAction } from '../reducers/blogReducer'
 import { notificationAction } from '../reducers/notificationReducer'
 import blogService from '../services/blogs'
+import {
+  TableContainer,
+  Table,
+  TableBody,
+  Paper,
+  TableRow,
+  TableCell,
+} from '@material-ui/core'
 
 const Blogs = () => {
   const dispatch = useDispatch()
@@ -37,11 +45,21 @@ const Blogs = () => {
     const copied = [...blogs]
     const sorted = copied.sort((a, b) => b.likes - a.likes)
 
-    return sorted.map((blog) => (
-      <p key={blog.id}>
-        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-      </p>
-    ))
+    return (
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            {sorted.map((blog) => (
+              <TableRow key={blog.id}>
+                <TableCell>
+                  <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    )
   }
 
   const wholeForm = () => (

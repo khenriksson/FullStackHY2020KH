@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { userAction } from '../reducers/userReducer'
 import { notificationAction } from '../reducers/notificationReducer'
 import blogService from '../services/blogs'
+import { AppBar, Button, Toolbar, Typography } from '@material-ui/core'
 
 const Navigation = () => {
   const dispatch = useDispatch()
@@ -69,24 +70,27 @@ const Navigation = () => {
   }
 
   return (
-    <>
-      <Link style={padding} to='/'>
-        home
-      </Link>
-      <Link style={padding} to='/users'>
-        user
-      </Link>
-      {user !== null ? (
-        <>
-          <span>{user.name} logged in</span>{' '}
-          <button type='submit' onClick={handleLogout}>
-            logout
-          </button>
-        </>
-      ) : (
-        loginForm()
-      )}
-    </>
+    <AppBar position='static'>
+      <Toolbar>
+        <Button color='inherit' component={Link} to='/'>
+          Home
+        </Button>
+
+        <Button color='inherit' component={Link} to='/users'>
+          Home
+        </Button>
+        {user !== null ? (
+          <>
+            <span>{user.name} logged in</span>{' '}
+            <Button variant='outlined' type='submit' onClick={handleLogout}>
+              logout
+            </Button>
+          </>
+        ) : (
+          loginForm()
+        )}
+      </Toolbar>
+    </AppBar>
   )
 }
 
