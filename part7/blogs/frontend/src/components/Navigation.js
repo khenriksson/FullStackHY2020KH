@@ -6,61 +6,73 @@ import { useDispatch } from 'react-redux'
 import { userAction } from '../reducers/userReducer'
 import { notificationAction } from '../reducers/notificationReducer'
 import blogService from '../services/blogs'
-import { AppBar, Button, Toolbar, Typography } from '@material-ui/core'
+import {
+  AppBar,
+  Button,
+  Grid,
+  TextField,
+  Toolbar,
+  Typography,
+} from '@material-ui/core'
+import useField from '../hooks/useField'
 
 const Navigation = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('password')
+
   const padding = {
     padding: 5,
   }
 
   const handleLogin = async (event) => {
     event.preventDefault()
+    console.log('username :>> ', username)
+    console.log('password :>> ', password)
+
     try {
       const user = await loginService.login({
-        username,
-        password,
+        username: username.value,
+        password: password.value,
       })
 
       window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
 
       blogService.setToken(user.token)
       dispatch(userAction(user))
-      setUsername('')
-      setPassword('')
     } catch (exception) {
       dispatch(notificationAction('wrong username or password', 3))
     }
   }
 
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type='text'
-          id='username'
-          value={username}
-          name='Username'
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type='password'
-          id='password'
-          value={password}
-          name='Password'
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button id='login-button' type='submit'>
-        login
-      </button>
+    <form onSubmit={handleLogin} justifyContent='center'>
+      <TextField
+        variant='outlined'
+        margin='normal'
+        id='username'
+        label='Username'
+        size='small'
+        {...username}
+      />
+
+      <TextField
+        variant='outlined'
+        margin='normal'
+        id='password'
+        label='Password'
+        size='small'
+        {...password}
+      />
+      <Button
+        variant='contained'
+        color='secondary'
+        id='login-button'
+        type='submit'
+      >
+        Login
+      </Button>
     </form>
   )
 
@@ -77,18 +89,22 @@ const Navigation = () => {
         </Button>
 
         <Button color='inherit' component={Link} to='/users'>
-          Home
+          Users
         </Button>
-        {user !== null ? (
-          <>
-            <span>{user.name} logged in</span>{' '}
-            <Button variant='outlined' type='submit' onClick={handleLogout}>
-              logout
-            </Button>
-          </>
-        ) : (
-          loginForm()
-        )}
+        <Grid container>
+          <Grid alignContent='flex-end'>
+            {user !== null ? (
+              <>
+                <span>{user.name} logged in</span>{' '}
+                <Button variant='outlined' type='submit' onClick={handleLogout}>
+                  logout
+                </Button>
+              </>
+            ) : (
+              loginForm()
+            )}
+          </Grid>
+        </Grid>
       </Toolbar>
     </AppBar>
   )

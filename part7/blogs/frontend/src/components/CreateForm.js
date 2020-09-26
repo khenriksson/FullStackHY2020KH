@@ -22,25 +22,38 @@ const CreateForm = ({ createBlog }) => {
 
   return (
     <form onSubmit={addBlog} className='formDiv'>
-      <Grid container spacing={1} direction='column' alignItems='center'>
-        <Grid item direction='row'>
-          <Typography align='justify'>title:</Typography>
+      <Grid
+        container
+        spacing={1}
+        direction='column'
+        alignItems='center'
+        justifyContent='center'
+      >
+        <Grid item>
           {/* <input {...title} /> */}
-          <TextField variant='outlined' margin='normal' {...title} />
+          <TextField
+            label='Title'
+            variant='outlined'
+            margin='normal'
+            {...title}
+          />
         </Grid>
         <Grid item>
-          <Typography align='justify'>author:</Typography>
-          <TextField variant='outlined' margin='normal' {...author} />
+          <TextField
+            label='Author'
+            variant='outlined'
+            margin='normal'
+            {...author}
+          />
         </Grid>
         <Grid item>
-          <Typography align='justify'>url:</Typography>
-          <TextField variant='outlined' margin='normal' {...url} />
+          <TextField label='URL' variant='outlined' margin='normal' {...url} />
         </Grid>
-      </Grid>
-      <Grid item spacing={1}>
-        <Button variant='contained' color='primary' id='create' type='submit'>
-          create
-        </Button>
+        <Grid item spacing={1}>
+          <Button variant='contained' color='primary' id='create' type='submit'>
+            create
+          </Button>
+        </Grid>
       </Grid>
     </form>
   )
