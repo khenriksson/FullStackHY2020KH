@@ -90,10 +90,16 @@ const typeDefs = gql`
     published: Int!
     genres: [String]!
   }
+  type Author {
+    name: String!
+    born: Int
+    bookCount: Int!
+  }
   type Query {
     bookCount: Int!
     authorCount: Int!
     allBooks: [Book!]!
+    allAuthors: [Author!]!
   }
 `
 
@@ -103,6 +109,17 @@ const resolvers = {
     authorCount: () => authors.length,
     allBooks: () => {
       return books
+    },
+    allAuthors: (root, args) => {
+      return authors
+    },
+  },
+  Author: {
+    bookCount: (root, args) => {
+      console.log('root :>> ', root)
+      const filter = books.filter((obj) => obj.author === root.name).length
+      console.log('filter :>> ', filter)
+      return filter
     },
   },
 }
