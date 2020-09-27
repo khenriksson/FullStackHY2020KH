@@ -1,0 +1,20 @@
+{
+  "name": "graphhql-apollo",
+  "version": "1.0.0",
+  "description": "Test project in start of 8",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kasper Henriksson",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.18.1",
+    "graphql": "^15.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
