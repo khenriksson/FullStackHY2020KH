@@ -104,6 +104,7 @@ const typeDefs = gql`
       genres: [String]!
     ): Book
     addAuthor(name: String!, born: String): Author
+    editAuthor(name: String!, setBornTo: Int!): Author
   }
   type Query {
     bookCount: Int!
@@ -137,9 +138,9 @@ const resolvers = {
   Author: {
     bookCount: (root, args) => {
       //   if (authors.filter((author) => author.name === args.name))
-      console.log('root :>> ', root)
+
       const filter = books.filter((obj) => obj.author === root.name).length
-      console.log('filter :>> ', filter)
+
       return filter
     },
   },
@@ -158,14 +159,20 @@ const resolvers = {
       }
       const book = { ...args, id: uuid() }
 
-      console.log(
-        'filter :>> ',
-        authors.filter((author) => author.name === args.author).length < 1,
-      )
+      authors.filter((author) => author.name === args.author).length < 1,
+        (books = [...books, book])
 
-      books = [...books, book]
-      //   console.log('books :>> ', books)
       return book
+    },
+    editAuthor: (root, args) => {
+      const author = authors.find((p) => p.name === args.name)
+      if (!author) {
+        return null
+      } else {
+        const updatedAuthor = { ...author, born: args.setBornTo }
+        authors = authors.map((p) => (p.name === args.name ? updatedAuthor : p))
+        return updatedAuthor
+      }
     },
   },
 }
