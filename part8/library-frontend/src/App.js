@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client'
 const App = () => {
   const [page, setPage] = useState('authors')
   const [name, setName] = useState('')
-  const [bornes, setBorn] = useState(0)
+  const [born, setBorn] = useState(0)
 
   const result = useQuery(ALL_AUTHORS, {
     pollInterval: 2000,
@@ -29,9 +29,14 @@ const App = () => {
     setName(event.target.value)
   }
 
+  const handleNumberChange = (event) => {
+    setBorn(event.target.valueAsNumber)
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const born = Number(bornes)
+    console.log('typeof bornes :>> ', typeof bornes)
+    // const born = Number(bornes)
     editAuthor({ variables: { name, born } })
   }
   return (
@@ -49,8 +54,8 @@ const App = () => {
       <div>
         <form onSubmit={handleSubmit}>
           <label>
-            Pick your favorite flavor:
-            <select value={''} onChange={handleChange}>
+            Edit author
+            <select onChange={handleChange}>
               {result.data.allAuthors.map((author) => {
                 return (
                   <option key={author.id} value={author.name}>
@@ -61,10 +66,7 @@ const App = () => {
             </select>
           </label>
           born
-          <input
-            type='number'
-            onChange={({ target }) => setBorn(target.value)}
-          />
+          <input type='number' onChange={handleNumberChange} />
           <input type='submit' value='Submit' />
         </form>
       </div>
