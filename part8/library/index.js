@@ -122,11 +122,8 @@ const resolvers = {
   },
   Author: {
     bookCount: async (root, args) => {
-      console.log('args :>> ', args)
       const author = await Author.find({ name: root.name })
       const books = await Book.find({ author: author }).countDocuments()
-      console.log('books :>> ', books)
-
       return books
     },
   },
@@ -147,7 +144,7 @@ const resolvers = {
       let book
       console.log('author :>> ', author)
       if (!author) {
-        const newAuthor = new Author({ name: args.author, bookCount })
+        const newAuthor = new Author({ name: args.author })
         try {
           await newAuthor.save()
           book = new Book({ ...args, author: newAuthor })
@@ -161,7 +158,7 @@ const resolvers = {
         try {
           await author.save()
 
-          book = new Book({ ...args, author: { ...author, bookCount } })
+          book = new Book({ ...args, author: { ...author } })
           await book.save()
         } catch (error) {
           throw new UserInputError(error.message, {
