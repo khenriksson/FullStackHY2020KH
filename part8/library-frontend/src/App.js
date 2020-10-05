@@ -4,14 +4,16 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import { ALL_AUTHORS, ALL_BOOKS, EDIT_AUTHOR } from './queries'
-import { useMutation } from '@apollo/client'
+import { useMutation, useApolloClient } from '@apollo/client'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [page, setPage] = useState('authors')
   const [name, setName] = useState('')
   const [born, setBorn] = useState(0)
   const [token, setToken] = useState(null)
-
+  const client = useApolloClient()
+  console.log('token :>> ', token)
   const result = useQuery(ALL_AUTHORS, {
     pollInterval: 2000,
   })
@@ -24,6 +26,12 @@ const App = () => {
 
   if (result.loading || books.loading) {
     return <div>loading...</div>
+  }
+
+  const logout = () => {
+    setToken(null)
+    localStorage.clear()
+    client.resetStore()
   }
 
   const handleChange = (event) => {
@@ -42,12 +50,13 @@ const App = () => {
   }
   return (
     <div>
+      <button onClick={logout}>logout</button>
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
       </div>
-
+      {token != '' ? <LoginForm setToken={setToken} /> : null}
       <Authors authors={result.data.allAuthors} show={page === 'authors'} />
       <Books books={books.data.allBooks} show={page === 'books'} />
       <NewBook show={page === 'add'} />
