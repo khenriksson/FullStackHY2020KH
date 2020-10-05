@@ -10,6 +10,7 @@ const App = () => {
   const [page, setPage] = useState('authors')
   const [name, setName] = useState('')
   const [born, setBorn] = useState(0)
+  const [token, setToken] = useState(null)
 
   const result = useQuery(ALL_AUTHORS, {
     pollInterval: 2000,
