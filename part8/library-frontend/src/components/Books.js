@@ -1,11 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Books = (props) => {
+  const [filter, setFilter] = useState(null)
+  const [filters, setFilters] = useState([])
+  const [bookis, setBook] = useState([])
+
+  const books = props.books
+
+  const countFilters = () => {
+    let tmp = []
+    books.map((book) => {
+      book.genres.map((genre) => {
+        if (tmp.indexOf(genre) === -1) {
+          tmp.push(genre)
+        }
+      })
+    })
+    return tmp
+  }
+
+  console.log('countFilters() :>> ', countFilters())
+
+  useEffect(() => {
+    setFilters(countFilters)
+    setBook(books)
+  }, [])
   if (!props.show) {
     return null
   }
 
-  const books = props.books
+  console.log('filter :>> ', filter)
+  console.log('bookis :>> ', bookis)
 
   return (
     <div>
@@ -18,15 +43,31 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map((a) => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author}</td>
-              <td>{a.published}</td>
-            </tr>
-          ))}
+
+          {!filter
+            ? books.map((a) => (
+                <tr key={a.title}>
+                  <td>{a.title}</td>
+                  <td>{a.author}</td>
+                  <td>{a.published}</td>
+                </tr>
+              ))
+            : books
+                .filter((book) => book.genres.includes(filter))
+                .map((a) => (
+                  <tr key={a.title}>
+                    <td>{a.title}</td>
+                    <td>{a.author}</td>
+                    <td>{a.published}</td>
+                  </tr>
+                ))}
         </tbody>
       </table>
+
+      {filters.map((genre) => {
+        return <button onClick={() => setFilter(genre)}>{genre}</button>
+      })}
+      <button onClick={() => setFilter(null)}>all genres</button>
     </div>
   )
 }

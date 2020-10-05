@@ -14,6 +14,7 @@ const App = () => {
   const [token, setToken] = useState(null)
   const client = useApolloClient()
   console.log('token :>> ', token)
+  console.log('client :>> ', client)
   const result = useQuery(ALL_AUTHORS, {
     pollInterval: 2000,
   })
@@ -50,16 +51,23 @@ const App = () => {
   }
   return (
     <div>
-      <button onClick={logout}>logout</button>
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
+        {!token ? (
+          <button onClick={() => setPage('login')}>login</button>
+        ) : (
+          <>
+            <button onClick={() => setPage('add')}>add book</button>
+            <button onClick={logout}>logout</button>
+          </>
+        )}
       </div>
-      {token != '' ? <LoginForm setToken={setToken} /> : null}
+
       <Authors authors={result.data.allAuthors} show={page === 'authors'} />
       <Books books={books.data.allBooks} show={page === 'books'} />
       <NewBook show={page === 'add'} />
+      <LoginForm setToken={setToken} show={page === 'login'} />
 
       <div>
         <form onSubmit={handleSubmit}>

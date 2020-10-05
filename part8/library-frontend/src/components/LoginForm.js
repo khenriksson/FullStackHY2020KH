@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import { LOGIN } from '../queries'
 
-const LoginForm = ({ setError, setToken }) => {
+const LoginForm = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -11,11 +11,18 @@ const LoginForm = ({ setError, setToken }) => {
   useEffect(() => {
     if (result.data) {
       const token = result.data.login.value
-      setToken(token)
-      localStorage.setItem('phonenumbers-user-token', token)
+      console.log('token in lloginform :>> ', token)
+      props.setToken(token)
+      localStorage.setItem('testing', token)
+    } else if (localStorage.getItem('testing')) {
+      const token = localStorage.getItem('testing')
+      props.setToken(token)
     }
   }, [result.data]) // eslint-disable-line
 
+  if (!props.show) {
+    return null
+  }
   const submit = async (event) => {
     event.preventDefault()
 
