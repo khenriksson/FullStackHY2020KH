@@ -1,4 +1,6 @@
+import { useMutation } from '@apollo/client'
 import React, { useEffect, useState } from 'react'
+import { EDIT_AUTHOR } from '../queries'
 
 const Books = (props) => {
   const [filter, setFilter] = useState(null)
@@ -25,6 +27,7 @@ const Books = (props) => {
     setFilters(countFilters)
     setBook(books)
   }, [])
+
   if (!props.show) {
     return null
   }

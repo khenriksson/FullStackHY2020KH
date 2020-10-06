@@ -140,6 +140,7 @@ const resolvers = {
       return Author.find({})
     },
     me: (root, args, context) => {
+      console.log('context :>> ', context)
       return context.currentUser
     },
   },
@@ -223,10 +224,12 @@ const resolvers = {
       }
     },
     createUser: (root, args) => {
+      console.log('args :>> ', args)
       const user = new User({
         username: args.username,
         favoriteGenre: args.favoriteGenre,
       })
+      console.log('user :>> ', user)
 
       return user.save().catch((error) => {
         throw new UserInputError(error.message, {
@@ -256,6 +259,7 @@ const server = new ApolloServer({
   resolvers,
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null
+    console.log('req.headers :>> ', req.headers)
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
       const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET)
       const currentUser = await User.findById(decodedToken.id)
