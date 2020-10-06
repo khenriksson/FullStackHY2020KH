@@ -16,10 +16,13 @@ const Authors = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    console.log('typeof bornes :>> ', typeof bornes)
+    console.log('typeof bornes :>> ', typeof born)
     // const born = Number(bornes)
     editAuthor({ variables: { name, born } })
   }
+
+  console.log('born :>> ', born)
+  console.log('name :>> ', name)
   if (!props.show) {
     return null
   }

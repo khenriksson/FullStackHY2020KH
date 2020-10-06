@@ -200,9 +200,11 @@ const resolvers = {
 
       return book
     },
-    editAuthor: (root, args, context) => {
-      const author = Author.findOne({ name: args.name })
+    editAuthor: async (root, args, context) => {
+      const author = await Author.findOne({ name: args.name })
+      console.log('author :>> ', author)
       const currentUser = context.currentUser
+      console.log('currentUser :>> ', currentUser)
 
       if (!currentUser) {
         throw new AuthenticationError('not authenticated')
@@ -212,8 +214,9 @@ const resolvers = {
         return null
       } else {
         author.born = args.setBornTo
+        console.log('author.born :>> ', author.born)
         try {
-          author.save
+          author.save()
         } catch (error) {
           throw new UserInputError(error.message, {
             invalidArgs: args,
@@ -259,7 +262,6 @@ const server = new ApolloServer({
   resolvers,
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null
-    console.log('req.headers :>> ', req.headers)
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
       const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET)
       const currentUser = await User.findById(decodedToken.id)
