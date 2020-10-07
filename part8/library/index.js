@@ -143,15 +143,6 @@ const resolvers = {
     me: (root, args, context) => {
       return context.currentUser
     },
-    filteredBooks: async (root, args, context) => {
-      console.log('args :>> ', args)
-      console.log('were here')
-      const user = context.currentUser
-      console.log('user :>> ', user)
-      const books = await Book.find({ genres: { $in: [args.genre] } })
-      //   console.log('books :>> ', books)
-      return books
-    },
   },
   Author: {
     bookCount: async (root, args) => {
