@@ -1,12 +1,18 @@
-import React from 'react'
+import { useLazyQuery, useQuery } from '@apollo/client'
+import React, { useEffect, useState } from 'react'
+import { FILTERED } from '../queries'
 
 const Recommended = (props) => {
   const genre = props.me
-  console.log('genre :>> ', genre)
+  const variables = genre ? { genre } : {}
+  const { data } = useQuery(FILTERED, {
+    variables,
+    pollInterval: 1000,
+  })
+
   if (!props.show) {
     return null
   }
-  const books = props.books
 
   return (
     <div>
@@ -18,8 +24,8 @@ const Recommended = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books
-            .filter((book) => book.genres.includes(genre))
+          {data.filteredBooks
+            // .filter((book) => book.genres.includes(genre))
             .map((a) => (
               <tr key={a.title}>
                 <td>{a.title}</td>

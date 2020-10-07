@@ -117,6 +117,7 @@ const typeDefs = gql`
     allBooks(genre: String, author: String): [Book!]!
     allAuthors: [Author!]!
     me: User
+    filteredBooks(genre: String): [Book!]!
   }
 `
 
@@ -140,8 +141,16 @@ const resolvers = {
       return Author.find({})
     },
     me: (root, args, context) => {
-      console.log('context :>> ', context)
       return context.currentUser
+    },
+    filteredBooks: async (root, args, context) => {
+      console.log('args :>> ', args)
+      console.log('were here')
+      const user = context.currentUser
+      console.log('user :>> ', user)
+      const books = await Book.find({ genres: { $in: [args.genre] } })
+      //   console.log('books :>> ', books)
+      return books
     },
   },
   Author: {
@@ -166,14 +175,14 @@ const resolvers = {
     },
     addBook: async (root, args, context) => {
       const author = await Author.findOne({ name: args.author })
-      console.log('context :>> ', context)
+
       const currentUser = context.currentUser
 
       if (!currentUser) {
         throw new AuthenticationError('not authenticated')
       }
       let book
-      console.log('author :>> ', author)
+
       if (!author) {
         const newAuthor = new Author({ name: args.author })
         try {
@@ -202,9 +211,8 @@ const resolvers = {
     },
     editAuthor: async (root, args, context) => {
       const author = await Author.findOne({ name: args.name })
-      console.log('author :>> ', author)
+
       const currentUser = context.currentUser
-      console.log('currentUser :>> ', currentUser)
 
       if (!currentUser) {
         throw new AuthenticationError('not authenticated')
@@ -214,7 +222,7 @@ const resolvers = {
         return null
       } else {
         author.born = args.setBornTo
-        console.log('author.born :>> ', author.born)
+
         try {
           author.save()
         } catch (error) {
@@ -227,12 +235,10 @@ const resolvers = {
       }
     },
     createUser: (root, args) => {
-      console.log('args :>> ', args)
       const user = new User({
         username: args.username,
         favoriteGenre: args.favoriteGenre,
       })
-      console.log('user :>> ', user)
 
       return user.save().catch((error) => {
         throw new UserInputError(error.message, {
