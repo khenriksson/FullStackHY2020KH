@@ -3,14 +3,17 @@ import React, { useEffect, useState } from 'react'
 import { ALL_BOOKS } from '../queries'
 
 const Recommended = (props) => {
-  const genre = props.me
-  const variables = genre ? { genre } : {}
+  const [genre, setGenre] = useState(props.genre)
+  console.log('genre :>> ', genre)
+
+  const variables = genre ? { genre } : ''
+
   const { data } = useQuery(ALL_BOOKS, {
     variables,
     pollInterval: 1000,
   })
 
-  if (!props.show || !props.me) {
+  if (!props.show || !props.genre) {
     return null
   }
 
@@ -24,15 +27,19 @@ const Recommended = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {data.allBooks
-            // .filter((book) => book.genres.includes(genre))
-            .map((a) => (
-              <tr key={a.title}>
-                <td>{a.title}</td>
-                <td>{a.author}</td>
-                <td>{a.published}</td>
-              </tr>
-            ))}
+          {genre ? (
+            data?.allBooks
+              // .filter((book) => book.genres.includes(genre))
+              .map((a) => (
+                <tr key={a.title}>
+                  <td>{a.title}</td>
+                  <td>{a.author}</td>
+                  <td>{a.published}</td>
+                </tr>
+              ))
+          ) : (
+            <p>log in</p>
+          )}
         </tbody>
       </table>
     </div>

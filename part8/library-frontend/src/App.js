@@ -26,6 +26,7 @@ const App = () => {
     pollInterval: 2000,
   })
   const { data } = useQuery(ME)
+  console.log('{data} :>> ', data)
 
   const updateCacheWith = (addedBook) => {
     const includedIn = (set, object) => set.map((p) => p.id).includes(object.id)
@@ -54,15 +55,11 @@ const App = () => {
   if (result.loading || books.loading || !data) {
     return <div>loading...</div>
   }
-  console.log('me :>> ', data.me)
+
   const logout = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
-  }
-
-  const handleClick = (event) => {
-    setPage('login')
   }
 
   return (
@@ -82,7 +79,7 @@ const App = () => {
       </div>
       <Recommended
         show={page === 'recommended'}
-        me={!data.me ? '' : data.me.favoriteGenre}
+        genre={data.me ? data.me.favoriteGenre : ''}
       />
       <Authors authors={result.data.allAuthors} show={page === 'authors'} />
       <Books books={books.data.allBooks} show={page === 'books'} />

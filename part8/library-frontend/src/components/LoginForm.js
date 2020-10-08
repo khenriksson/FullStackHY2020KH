@@ -24,8 +24,6 @@ const LoginForm = (props) => {
     return null
   }
   const submit = async (event) => {
-    event.preventDefault()
-
     login({ variables: { username, password } })
   }
 
