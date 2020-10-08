@@ -10,11 +10,9 @@ const Recommended = (props) => {
     pollInterval: 1000,
   })
 
-  if (!props.show) {
+  if (!props.show || !props.me) {
     return null
   }
-
-  console.log('data :>> ', data)
 
   return (
     <div>

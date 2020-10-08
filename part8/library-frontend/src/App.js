@@ -1,4 +1,9 @@
-import { useApolloClient, useQuery, useSubscription } from '@apollo/client'
+import {
+  useApolloClient,
+  useLazyQuery,
+  useQuery,
+  useSubscription,
+} from '@apollo/client'
 import React, { useState, useEffect } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
@@ -11,6 +16,7 @@ const App = () => {
   const [page, setPage] = useState('authors')
   const [filtered, setFiltered] = useState([])
   const [token, setToken] = useState(null)
+  const [user, setUser] = useState()
   const client = useApolloClient()
 
   const result = useQuery(ALL_AUTHORS, {
@@ -19,6 +25,7 @@ const App = () => {
   const books = useQuery(ALL_BOOKS, {
     pollInterval: 2000,
   })
+  const { data } = useQuery(ME)
 
   const updateCacheWith = (addedBook) => {
     const includedIn = (set, object) => set.map((p) => p.id).includes(object.id)
@@ -40,16 +47,22 @@ const App = () => {
     },
   })
 
-  const me = useQuery(ME)
+  //   useEffect(() => {
+  //     setUser(data)
+  //   }, [data])
 
-  if (result.loading || books.loading || me.loading) {
+  if (result.loading || books.loading || !data) {
     return <div>loading...</div>
   }
-
+  console.log('me :>> ', data.me)
   const logout = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
+  }
+
+  const handleClick = (event) => {
+    setPage('login')
   }
 
   return (
@@ -69,7 +82,7 @@ const App = () => {
       </div>
       <Recommended
         show={page === 'recommended'}
-        me={me.data.me.favoriteGenre}
+        me={!data.me ? '' : data.me.favoriteGenre}
       />
       <Authors authors={result.data.allAuthors} show={page === 'authors'} />
       <Books books={books.data.allBooks} show={page === 'books'} />
