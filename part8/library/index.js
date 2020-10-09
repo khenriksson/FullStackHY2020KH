@@ -92,25 +92,43 @@ const resolvers = {
         const author = await Author.findOne({ name: args.author })
         const books = await Book.find({ author: author })
         return books
+      } else if (args.genre && args.author) {
+        const author = await Author.findOne({ name: args.author })
+        const books = await Book.find({
+          author: author,
+          genres: { $in: [args.genre] },
+        })
+        return books
+        return
       } else if (!args.genre && !args.author) {
         const books = await Book.find({})
         return books
       }
     },
-    allAuthors: () => {
+    allAuthors: async () => {
+      const author = await Author.find({})
+      const books = await Book.find({})
+      console.log('books :>> ', books)
+
+      console.log('newAuthors :>> ', newAuthors)
+      console.log('author :>> ', author)
+      return newAuthors
       return Author.find({})
     },
     me: (root, args, context) => {
       return context.currentUser
     },
   },
-  Author: {
-    bookCount: async (root, args) => {
-      const author = await Author.find({ name: root.name })
-      const books = await Book.find({ author: author }).countDocuments()
-      return books
-    },
-  },
+  //   Author: {
+  //     bookCount: async (root, args) => {
+  //       const author = await Author.find({ name: root.name }).populate(
+  //         'bookCount',
+  //       )
+  //       console.log('author :>> ', author)
+  //       const books = await Book.find({ author: author }).countDocuments()
+  //       return books
+  //     },
+  //   },
 
   Mutation: {
     addAuthor: async (root, args) => {
@@ -138,7 +156,7 @@ const resolvers = {
       if (!author) {
         const newAuthor = new Author({ name: args.author })
         try {
-          await newAuthor.save()
+          await newwhaAuthor.save()
           book = new Book({ ...args, author: newAuthor })
           await book.save()
         } catch (error) {
