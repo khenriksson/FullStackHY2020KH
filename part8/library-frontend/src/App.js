@@ -20,12 +20,14 @@ const App = () => {
   const client = useApolloClient()
 
   const result = useQuery(ALL_AUTHORS, {
-    pollInterval: 2000,
+    pollInterval: 5000,
   })
   const books = useQuery(ALL_BOOKS, {
-    pollInterval: 2000,
+    pollInterval: 5000,
   })
-  const { data } = useQuery(ME)
+  const { data } = useQuery(ME, {
+    pollInterval: 1000,
+  })
   console.log('{data} :>> ', data)
 
   const updateCacheWith = (addedBook) => {

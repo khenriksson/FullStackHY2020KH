@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useMutation } from '@apollo/client'
-import { LOGIN } from '../queries'
+import { useMutation, updateCacheWith } from '@apollo/client'
+import { LOGIN, ME } from '../queries'
 
 const LoginForm = (props) => {
   const [username, setUsername] = useState('')
@@ -24,6 +24,7 @@ const LoginForm = (props) => {
     return null
   }
   const submit = async (event) => {
+    event.preventDefault()
     login({ variables: { username, password } })
   }
 
