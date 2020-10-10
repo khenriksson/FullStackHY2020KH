@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "bmiCalculator": "ts-node bmiCalculator.ts"
+    "bmiCalculator": "ts-node bmiCalculator.ts",
+    "calculateExercises": "ts-node calculateExercises.ts"
   },
   "author": "",
   "license": "ISC",
