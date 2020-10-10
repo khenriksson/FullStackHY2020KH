@@ -16,6 +16,16 @@ require('dotenv').config()
 let MONGODB_URI = process.env.MONGODB_URI
 
 console.log('connecting to ', MONGODB_URI)
+const DataLoader = require('dataloader')
+const authorLoader = new DataLoader((keys) => batchAuthors(keys))
+
+const batchAuthors = async (keys) => {
+  console.log('keys :>> ', keys)
+  const results = await Author.find({ id: { $in: keys } })
+  return keys.map((key) => results[key] || new Error(`No result for ${key}`))
+
+  console.log('results :>> ', results)
+}
 
 mongoose
   .connect(MONGODB_URI, {
@@ -105,30 +115,34 @@ const resolvers = {
         return books
       }
     },
-    allAuthors: async () => {
-      const author = await Author.find({})
-      const books = await Book.find({})
-      console.log('books :>> ', books)
+    allAuthors: async (root, args) => {
+      //   const author = await Author.find({})
+      //   const books = await Book.find({})
+      //   //   const bookLoad = await bookLoader.loadMany(books)
+      //   //   console.log('bookLoad :>> ', bookLoad)
+      //   return books
+      //   return Author.find({})
 
-      console.log('newAuthors :>> ', newAuthors)
-      console.log('author :>> ', author)
-      return newAuthors
-      return Author.find({})
+      const authors = await Author.find({})
+      const books = await Book.find({})
+
+      const mapAuthors = authors.map((author) => {
+        let step = 0
+        books.forEach((book) => {
+          if (String(book.author._id) === String(author._id)) step++
+        })
+        {
+          author.bookCount = step
+        }
+        return author
+      })
+
+      return mapAuthors
     },
     me: (root, args, context) => {
       return context.currentUser
     },
   },
-  //   Author: {
-  //     bookCount: async (root, args) => {
-  //       const author = await Author.find({ name: root.name }).populate(
-  //         'bookCount',
-  //       )
-  //       console.log('author :>> ', author)
-  //       const books = await Book.find({ author: author }).countDocuments()
-  //       return books
-  //     },
-  //   },
 
   Mutation: {
     addAuthor: async (root, args) => {
