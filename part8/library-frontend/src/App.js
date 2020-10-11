@@ -28,6 +28,7 @@ const App = () => {
   const { data } = useQuery(ME, {
     pollInterval: 1000,
   })
+
   console.log('{data} :>> ', data)
 
   const updateCacheWith = (addedBook) => {
