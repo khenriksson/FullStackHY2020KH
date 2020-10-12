@@ -1,36 +1,41 @@
-interface CalculateValues {
-  value1: number;
-  value2: number;
-}
+function bmi(height: string, weight: string) {
+  //   interface CalculateValues {
+  //     value1: number;
+  //     value2: number;
+  //   }
 
-const parseArguments = (args: Array<string>): CalculateValues => {
-  if (args.length < 4) throw new Error('Not enough arguments');
-  if (args.length > 4) throw new Error('Too many arguments');
-  if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
-    return {
-      value1: Number(args[2]),
-      value2: Number(args[3]),
-    };
-  } else {
-    throw new Error('Provided values were not number!');
+  //   const parseArguments = (height: string, weight: string): CalculateValues => {
+  //     if (!Number(height) && !Number(weight)) {
+  //       return {
+  //         value1: Number(height),
+  //         value2: Number(weight),
+  //       };
+  //     } else {
+  //       throw new Error('malformatted parameters');
+  //     }
+  //   };
+
+  const bmiCalculator = (a: number, b: number) => {
+    if (!a || !b) throw new Error('malformatted parameters');
+    const height = a / 100;
+    const square: number = height * height;
+    const result = b / square;
+
+    if (result <= 15) return 'Severely underweight';
+    else if (result <= 16) return 'Underweight';
+    else if (result <= 25) return 'Normal (healthy weight)';
+    else return 'Overweight';
+  };
+
+  try {
+    // const arr = ['string', 'string', height, weight]; // I know I shouldn't do it like this but this was the fastest way without making additional code changes
+
+    // if (value1 || !value2) throw new Error('malformatted parameters');
+    return bmiCalculator(Number(height), Number(weight));
+  } catch (e) {
+    return e.message;
   }
-};
-
-const bmiCalculator = (a: number, b: number) => {
-  const height = a / 100;
-  const square: number = height * height;
-  const result = b / square;
-
-  if (result < 15) return console.log('Severely underweight');
-  else if (result < 16) return console.log('Underweight');
-  else if (result < 25) return console.log('Normal (healthy weight)');
-  else if (result >= 25) return console.log('Overweight');
-};
-
-try {
-  const { value1, value2 } = parseArguments(process.argv);
-  bmiCalculator(value1, value2);
-} catch (e) {
-  console.log('Error, something bad happened, message: ', e.message);
 }
 // console.log(bmiCalculator(163, 65));
+
+export default bmi;

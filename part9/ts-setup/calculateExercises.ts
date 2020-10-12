@@ -1,3 +1,5 @@
+export function ( ) {
+
 interface CalculateValue {
   periodLength: number;
   trainingDays: number;
@@ -105,4 +107,5 @@ try {
   calculateExercises(days, target);
 } catch (e) {
   console.log('Error, something bad happened, message: ', e.message);
+}
 }
