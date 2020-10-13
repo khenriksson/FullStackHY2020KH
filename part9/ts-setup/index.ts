@@ -14,7 +14,7 @@ app.get('/hello', (_req, res) => {
 app.get('/bmi', (req, res) => {
   const height = String(req.query.height);
   const weight = String(req.query.weight);
-  const answer = bmi(height, weight);
+  const answer: string = bmi(height, weight);
 
   if (!req.query.height || !req.query.weight) {
     res.send({ answer });

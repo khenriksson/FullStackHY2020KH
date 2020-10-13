@@ -1,14 +1,12 @@
-export function ( ) {
-
-interface CalculateValue {
-  periodLength: number;
-  trainingDays: number;
-  success: boolean;
-  rating: number;
-  ratingDescription: string;
-  target: number;
-  average: number;
-}
+// interface CalculateValue {
+//   periodLength: number;
+//   trainingDays: number;
+//   success: boolean;
+//   rating: number;
+//   ratingDescription: string;
+//   target: number;
+//   average: number;
+// }
 
 interface ObjectValues {
   target: number;
@@ -16,22 +14,20 @@ interface ObjectValues {
 }
 
 const parsedArguments = (args: Array<string>): ObjectValues => {
-  if (args.length < 4) throw new Error('Not enough arguments');
+  if (args.length < 4) throw new TypeError('Not enough arguments');
 
-  console.log(args.slice(3).length);
-  console.log('args[2] :>> ', args[2]);
-  let arr = args.slice(3);
-  console.log('arr :>> ', arr);
+  const arr = args.slice(3);
+
   for (let i = 0; i < arr.length; i++) {
     // check if array value is false or NaN
 
     if (isNaN(Number(arr[i]))) {
-      console.log('NaN found at place ' + i);
-      throw new Error('Provided values were not number!');
+      console.log('NaN found at place ' + String(i));
+      throw new TypeError('Provided values were not number!');
     }
   }
   console.log('arr :>> ', arr);
-  let newArr = arr.map((i) => Number(i));
+  const newArr = arr.map((i) => Number(i));
 
   return {
     target: Number(args[2]),
@@ -47,10 +43,10 @@ const calculateExercises = (arr: number[], target: number) => {
     return accumulator + currentValue;
   };
   const training = () => {
-    let check: number = 0;
+    let check = 0;
     console.log('check :>> ', check);
     console.log('arr.length :>> ', arr.length);
-    for (let i: number = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
       console.log('arr[i] :>> ', arr[i]);
       console.log('i :>> ', i);
 
@@ -100,12 +96,12 @@ const calculateExercises = (arr: number[], target: number) => {
 
   return console.log(returned);
 };
-
+let answer = '';
 try {
   const { target, days } = parsedArguments(process.argv);
   console.log('target :>> ', target);
-  calculateExercises(days, target);
+  return calculateExercises(days, target);
 } catch (e) {
-  console.log('Error, something bad happened, message: ', e.message);
-}
+  if (e instanceof Error) answer = e.message;
+  console.log('Error, something bad happened, message: ', answer);
 }
