@@ -1,12 +1,12 @@
-// interface CalculateValue {
-//   periodLength: number;
-//   trainingDays: number;
-//   success: boolean;
-//   rating: number;
-//   ratingDescription: string;
-//   target: number;
-//   average: number;
-// }
+interface CalculateValue {
+  periodLength: number;
+  trainingDays: number;
+  success: boolean;
+  rating: number;
+  ratingDescription: string;
+  target: number;
+  average: number;
+}
 
 interface ObjectValues {
   target: number;
@@ -35,7 +35,15 @@ const parsedArguments = (args: Array<string>): ObjectValues => {
   };
 };
 
-const calculateExercises = (arr: number[], target: number) => {
+export const calculateExercises = (
+  arr: number[],
+  target: number
+): CalculateValue => {
+  console.log('arr :>> ', arr);
+  if (!arr || !target) throw new TypeError('parameters missing');
+  console.log('typeof arr :>> ', typeof arr);
+  if (typeof arr !== 'object' || typeof target !== 'number')
+    throw new TypeError('malformatted parameters');
   const periodLength = arr.length;
 
   console.log('arr :>> ', arr);
@@ -94,13 +102,13 @@ const calculateExercises = (arr: number[], target: number) => {
     average: average,
   };
 
-  return console.log(returned);
+  return returned;
 };
 let answer = '';
 try {
   const { target, days } = parsedArguments(process.argv);
   console.log('target :>> ', target);
-  return calculateExercises(days, target);
+  calculateExercises(days, target);
 } catch (e) {
   if (e instanceof Error) answer = e.message;
   console.log('Error, something bad happened, message: ', answer);
