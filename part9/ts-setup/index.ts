@@ -1,4 +1,5 @@
-import express from 'express';
+import express, { Response } from 'express';
+
 // import BmiCalculator from './bmiCalculator';
 import bodyParser from 'body-parser';
 import bmi from './bmiCalculator';
@@ -7,10 +8,6 @@ import { calculateExercises } from './calculateExercises';
 interface Body {
   daily_exercises: number[];
   target: number;
-}
-
-interface BodyRequest<T> extends Request {
-  body: T;
 }
 
 const app = express();
@@ -33,9 +30,12 @@ app.get('/bmi', (req, res) => {
   }
 });
 
-app.post('/exercises', (req: BodyRequest<Body>, res) => {
-  const target: number = req.body.target; // eslint-disable-line @typescript-eslint/no-explicit-any
-  const daily_exercises: number[] = req.body.daily_exercises; // eslint-disable-line @typescript-eslint/no-explicit-any
+app.post('/exercises', (req, res: Response) => {
+  const body = req.body as Body;
+  console.log('req.body :>> ', req.body);
+  console.log('typeof req.body :>> ', typeof req.body);
+  const target: number = body.target;
+  const daily_exercises: number[] = body.daily_exercises;
 
   const answer = calculateExercises(daily_exercises, target);
 
