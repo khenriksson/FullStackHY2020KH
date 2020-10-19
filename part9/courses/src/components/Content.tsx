@@ -1,29 +1,24 @@
 import React from 'react';
+import Part from '../components/Part';
+import { TypePart } from '../interfaces/courseParts';
 
-interface ContentPropsChildren {
-  name: string;
-  exerciseCount: number;
-}
+// interface ContentPropsChildren {
+//   name: string;
+//   exerciseCount: number;
+// }
 
-interface ContentProps {
-  courses: ContentPropsChildren[];
-}
+// interface ContentProps {
+//   courses: ContentPropsChildren[];
+// }
 
-const Content = (props: ContentProps) => {
-  const courseParts = props.courses;
-  return (
-    <>
-      {courseParts.map((course) => {
-        return (
-          <div key={course.name}>
-            <p>
-              {course.name} {course.exerciseCount}
-            </p>
-          </div>
-        );
-      })}
-    </>
-  );
-};
+const Content: React.FC<{ courseParts: Array<TypePart> }> = ({
+  courseParts,
+}) => (
+  <>
+    {courseParts.map((course) => (
+      <Part part={course} />
+    ))}
+  </>
+);
 
 export default Content;
