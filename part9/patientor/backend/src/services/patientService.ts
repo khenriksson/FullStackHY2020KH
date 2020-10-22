@@ -18,8 +18,16 @@ const getNonSensitiveEntries = (): Omit<Patient, 'ssn' | 'entries'>[] => {
   }));
 };
 
-const getPatientData = (): PublicPatient => {
-  return patients;
+const getPatientData = (id: string): PublicPatient => {
+  console.log(
+    'patients.filter(p => p.id ===id) :>> ',
+    patients.filter((p) => p.id === id)[0]
+  );
+  const patient = patients.filter((p) => {
+    return p.id === id;
+  })[0];
+
+  return patient;
 };
 
 const addEntry = (entry: NewPatient): Patient => {
