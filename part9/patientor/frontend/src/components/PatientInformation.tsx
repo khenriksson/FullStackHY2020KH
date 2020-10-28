@@ -4,6 +4,7 @@ import { Patient, IdPatient } from '../types';
 import axios from 'axios';
 import { apiBaseUrl } from '../constants';
 import { useStateValue } from '../state';
+import { Icon } from 'semantic-ui-react';
 
 const PatientInformation: React.FC = () => {
   const params: IdPatient = useParams();
@@ -24,22 +25,38 @@ const PatientInformation: React.FC = () => {
         const { data: patient } = await axios.get<Patient>(
           `${apiBaseUrl}/patients/${params.id}`
         );
-        console.log('patient :>> ', patient);
+        console.log('FETCHES');
         dispatch({ type: 'SET_PATIENT', payload: patient });
       } catch (e) {
         console.error(e);
       }
     };
-    fetchPatient();
+    if (!patient[id.toString()]) {
+      fetchPatient();
+    }
   }, [dispatch]);
-  const myPatient = patient;
+  const myPatient = () => patient[id.toString()];
   console.log('patient :>> ', patient);
-  console.log('params.id :>> ', params.id);
-  console.log('patient?.id?.dateOfBirth :>> ', patient[id.toString()]);
+
+  const icon = () => {
+    if (patient[id.toString()]?.gender === 'male') {
+      return <Icon name="mars" size="large" />;
+    } else if (patient[id.toString()]?.gender === 'female') {
+      return <Icon name="venus" size="large" />;
+    } else {
+      return <Icon name="genderless" size="large" />;
+    }
+  };
+  //   console.log('params.id :>> ', params.id);
+  //   console.log('patient?.id?.dateOfBirth :>> ', patient[id.toString()]);
   return (
     <div>
-      <p>Name: {patient[id.toString()]?.name} </p>
-      <p>Date of Birth: {patient[id.toString()]?.dateOfBirth}</p>
+      <h2>
+        {patient[id.toString()]?.name} {icon()}
+      </h2>
+
+      <p>ssn: {patient[id.toString()]?.ssn}</p>
+      <p>Occupation: {patient[id.toString()]?.occupation}</p>
     </div>
   );
 };
