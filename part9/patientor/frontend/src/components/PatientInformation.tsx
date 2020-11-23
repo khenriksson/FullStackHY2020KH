@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Patient, IdPatient } from '../types';
 import axios from 'axios';
 import { apiBaseUrl } from '../constants';
-import { useStateValue } from '../state';
+import { useStateValue, setPatient } from '../state';
 import { Icon } from 'semantic-ui-react';
 
 const PatientInformation: React.FC = () => {
@@ -26,7 +26,7 @@ const PatientInformation: React.FC = () => {
           `${apiBaseUrl}/patients/${params.id}`
         );
         console.log('FETCHES');
-        dispatch({ type: 'SET_PATIENT', payload: patient });
+        dispatch(setPatient(patient));
       } catch (e) {
         console.error(e);
       }
