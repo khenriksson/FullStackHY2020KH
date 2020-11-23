@@ -57,6 +57,19 @@ const PatientInformation: React.FC = () => {
 
       <p>ssn: {patient[id.toString()]?.ssn}</p>
       <p>Occupation: {patient[id.toString()]?.occupation}</p>
+
+      <h2>Entries: </h2>
+      {patient[id.toString()]?.entries.map((entry) => {
+        return (
+          <>
+            <p>Date: {entry.date}</p>
+            <p>{entry.description}</p>
+            {entry.diagnosisCodes?.map((diagnose) => (
+              <li>{diagnose}</li>
+            ))}
+          </>
+        );
+      })}
     </div>
   );
 };
