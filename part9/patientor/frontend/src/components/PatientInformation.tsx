@@ -8,10 +8,10 @@ import { Icon } from 'semantic-ui-react';
 
 const PatientInformation: React.FC = () => {
   const params: IdPatient = useParams();
-  const [{ patient }, dispatch] = useStateValue();
+  const [{ patient, diagnosis }, dispatch] = useStateValue();
   //   console.log('patients :>> ', patients);
   //   console.log('patient[params.id] :>> ', patients[params.id]);
-
+  console.log('diagnosis :>> ', diagnosis);
   //   let result = params.map((a) => a.id);
 
   //   const [, dispatch] = useStateValue();
@@ -31,6 +31,7 @@ const PatientInformation: React.FC = () => {
         console.error(e);
       }
     };
+
     if (!patient[id.toString()]) {
       fetchPatient();
     }
@@ -65,7 +66,9 @@ const PatientInformation: React.FC = () => {
             <p>Date: {entry.date}</p>
             <p>{entry.description}</p>
             {entry.diagnosisCodes?.map((diagnose) => (
-              <li>{diagnose}</li>
+              <li>
+                {diagnose}: {diagnosis[diagnose]?.name}
+              </li>
             ))}
           </>
         );
