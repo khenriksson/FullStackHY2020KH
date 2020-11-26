@@ -5,6 +5,30 @@ import axios from 'axios';
 import { apiBaseUrl } from '../constants';
 import { useStateValue, setPatient } from '../state';
 import { Icon } from 'semantic-ui-react';
+import HospitalEntryBox from './HospitalEntry';
+import OccupationalHealthEntry from './OccupationalHealthEntry';
+import HealthCheckBox from './HealthCheckEntry';
+import { Entry } from '../types';
+
+const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
+};
+
+const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
+  switch (entry.type) {
+    case 'HealthCheck':
+      return <HealthCheckBox entry={entry} />;
+    case 'Hospital':
+      return <HospitalEntryBox entry={entry} />;
+    case 'OccupationalHealthcare':
+      return <OccupationalHealthEntry entry={entry} />;
+
+    default:
+      return assertNever(entry);
+  }
+};
 
 const PatientInformation: React.FC = () => {
   const params: IdPatient = useParams();
@@ -63,13 +87,12 @@ const PatientInformation: React.FC = () => {
       {patient[id.toString()]?.entries.map((entry) => {
         return (
           <>
-            <p>Date: {entry.date}</p>
-            <p>{entry.description}</p>
             {entry.diagnosisCodes?.map((diagnose) => (
               <li>
                 {diagnose}: {diagnosis[diagnose]?.name}
               </li>
             ))}
+            <EntryDetails entry={entry} />
           </>
         );
       })}

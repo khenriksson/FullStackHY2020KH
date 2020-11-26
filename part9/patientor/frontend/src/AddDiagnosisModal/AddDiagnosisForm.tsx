@@ -2,7 +2,11 @@ import React from 'react';
 import { Grid, Button } from 'semantic-ui-react';
 import { Field, Formik, Form } from 'formik';
 
-import { TextField, SelectField, GenderOption } from './FormField';
+import {
+  TextField,
+  SelectField,
+  GenderOption,
+} from '../AddDiagnosisModal/FormField';
 import { Gender, Patient, Diagnosis } from '../types';
 
 /*
@@ -16,7 +20,7 @@ interface Props {
   onCancel: () => void;
 }
 
-export const AddPatientForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
+export const AddDiagnosisForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
   return (
     <Formik
       initialValues={{

@@ -73,6 +73,13 @@ const PatientListPage: React.FC = () => {
         onClose={closeModal}
       />
       <Button onClick={() => openModal()}>Add New Patient</Button>
+
+      <AddPatientModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewPatient}
+        error={error}
+        onClose={closeModal}
+      />
     </div>
   );
 };
