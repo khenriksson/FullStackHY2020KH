@@ -8,6 +8,8 @@ import {
   GenderOption,
 } from '../AddDiagnosisModal/FormField';
 import { Gender, Patient, Diagnosis } from '../types';
+import { DiagnosisSelection } from './FormField';
+import { useStateValue } from '../state';
 
 /*
  * use type Patient, but omit id and entries,
@@ -21,6 +23,8 @@ interface Props {
 }
 
 export const AddDiagnosisForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
+  const [{ diagnosis }] = useStateValue();
+
   return (
     <Formik
       initialValues={{
@@ -45,26 +49,31 @@ export const AddDiagnosisForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
         return errors;
       }}
     >
-      {({ isValid, dirty }) => {
+      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
             <Field
-              label="Name"
-              placeholder="Name"
-              name="name"
+              label="Description"
+              placeholder="Description"
+              name="description"
               component={TextField}
             />
             <Field
-              label="Code"
-              placeholder="Code"
-              name="code"
+              label="Date"
+              placeholder="Date"
+              name="date"
               component={TextField}
             />
             <Field
-              label="Latin"
-              placeholder="Latin"
-              name="latin"
+              label="Specialist"
+              placeholder="Specialist"
+              name="specialist"
               component={TextField}
+            />
+            <DiagnosisSelection
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+              diagnoses={Object.values(diagnosis)}
             />
 
             <Grid>

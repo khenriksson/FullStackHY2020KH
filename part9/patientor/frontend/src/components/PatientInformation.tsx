@@ -9,6 +9,9 @@ import HospitalEntryBox from './HospitalEntry';
 import OccupationalHealthEntry from './OccupationalHealthEntry';
 import HealthCheckBox from './HealthCheckEntry';
 import { Entry } from '../types';
+import AddDiagnosisModal from '../AddDiagnosisModal';
+import { DiagnosisFormValues } from '../AddDiagnosisModal/AddDiagnosisForm';
+import { Button, Divider, Header, Container } from 'semantic-ui-react';
 
 const assertNever = (value: never): never => {
   throw new Error(
@@ -40,6 +43,29 @@ const PatientInformation: React.FC = () => {
 
   //   const [, dispatch] = useStateValue();
   const id = params.id;
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | undefined>();
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
+  const submitNewPatient = async (values: DiagnosisFormValues) => {
+    try {
+      const { data: newPatient } = await axios.post<Patient>(
+        `${apiBaseUrl}/patients`,
+        values
+      );
+      //   dispatch();
+      closeModal();
+    } catch (e) {
+      console.error(e.response.data);
+      setError(e.response.data.error);
+    }
+  };
 
   React.useEffect(() => {
     // axios.get<void>(`${apiBaseUrl}/ping`);
@@ -96,6 +122,14 @@ const PatientInformation: React.FC = () => {
           </>
         );
       })}
+
+      <AddDiagnosisModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewPatient}
+        error={error}
+        onClose={closeModal}
+      />
+      <Button onClick={() => openModal()}>Add New Patient</Button>
     </div>
   );
 };
