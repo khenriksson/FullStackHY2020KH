@@ -24,6 +24,7 @@ interface Props {
 
 export const AddDiagnosisForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
   const [{ diagnosis }] = useStateValue();
+  console.log('diagnosis :>> ', diagnosis);
 
   return (
     <Formik
@@ -70,12 +71,13 @@ export const AddDiagnosisForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
               name="specialist"
               component={TextField}
             />
-            <DiagnosisSelection
-              setFieldValue={setFieldValue}
-              setFieldTouched={setFieldTouched}
-              diagnoses={Object.values(diagnosis)}
-            />
-
+            {diagnosis && (
+              <DiagnosisSelection
+                setFieldValue={setFieldValue}
+                setFieldTouched={setFieldTouched}
+                diagnoses={Object.values(diagnosis)}
+              />
+            )}
             <Grid>
               <Grid.Column floated="left" width={5}>
                 <Button type="button" onClick={onCancel} color="red">
