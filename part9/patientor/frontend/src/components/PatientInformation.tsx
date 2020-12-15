@@ -3,14 +3,14 @@ import { useParams } from 'react-router-dom';
 import { Patient, IdPatient } from '../types';
 import axios from 'axios';
 import { apiBaseUrl } from '../constants';
-import { useStateValue, setPatient } from '../state';
+import { useStateValue, setPatient, addEntry } from '../state';
 import { Icon } from 'semantic-ui-react';
 import HospitalEntryBox from './HospitalEntry';
 import OccupationalHealthEntry from './OccupationalHealthEntry';
 import HealthCheckBox from './HealthCheckEntry';
 import { Entry } from '../types';
 import AddDiagnosisModal from '../AddDiagnosisModal';
-import { DiagnosisFormValues } from '../AddDiagnosisModal/AddDiagnosisForm';
+import { EntryFormValues } from '../AddDiagnosisModal/AddDiagnosisForm';
 import { Button, Divider, Header, Container } from 'semantic-ui-react';
 
 const assertNever = (value: never): never => {
@@ -53,13 +53,21 @@ const PatientInformation: React.FC = () => {
     setError(undefined);
   };
 
-  const submitNewPatient = async (values: DiagnosisFormValues) => {
+  const submitNewPatient = async (values: EntryFormValues) => {
+    console.log('values :>> ', values);
     try {
-      const { data: newPatient } = await axios.post<Patient>(
-        `${apiBaseUrl}/patients`,
+      const { data: newPatient } = await axios.post<Entry>(
+        `${apiBaseUrl}/patients/${params.id}/entries`,
         values
       );
-      //   dispatch();
+      console.log('newPatient :>> ', newPatient);
+
+      //   dispatch(addEntry(newPatient, id));
+      const { data: patient } = await axios.get<Patient>(
+        `${apiBaseUrl}/patients/${params.id}`
+      );
+      console.log('FETCHES');
+      dispatch(setPatient(patient));
       closeModal();
     } catch (e) {
       console.error(e.response.data);
@@ -129,7 +137,7 @@ const PatientInformation: React.FC = () => {
         error={error}
         onClose={closeModal}
       />
-      <Button onClick={() => openModal()}>Add New Patient</Button>
+      <Button onClick={() => openModal()}>Add New Entry</Button>
     </div>
   );
 };

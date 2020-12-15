@@ -7,7 +7,7 @@ import {
   SelectField,
   GenderOption,
 } from '../AddDiagnosisModal/FormField';
-import { Gender, Patient, Diagnosis } from '../types';
+import { Gender, Patient, Diagnosis, BaseEntry } from '../types';
 import { DiagnosisSelection } from './FormField';
 import { useStateValue } from '../state';
 
@@ -15,10 +15,10 @@ import { useStateValue } from '../state';
  * use type Patient, but omit id and entries,
  * because those are irrelevant for new patient object.
  */
-export type DiagnosisFormValues = Diagnosis;
+export type EntryFormValues = Omit<BaseEntry, 'id'>;
 
 interface Props {
-  onSubmit: (values: DiagnosisFormValues) => void;
+  onSubmit: (values: EntryFormValues) => void;
   onCancel: () => void;
 }
 
@@ -29,22 +29,31 @@ export const AddDiagnosisForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
   return (
     <Formik
       initialValues={{
-        code: '',
-        name: '',
-        latin: '',
+        description: '',
+        date: '',
+        specialist: '',
+        diagnosisCodes: [],
+        type: 'Hospital',
+        discharge: {
+          date: '',
+          criteria: '',
+        },
       }}
       onSubmit={onSubmit}
       validate={(values) => {
         const requiredError = 'Field is required';
         const errors: { [field: string]: string } = {};
-        if (!values.code) {
-          errors.code = requiredError;
+        if (!values.description) {
+          errors.description = requiredError;
         }
-        if (!values.name) {
-          errors.name = requiredError;
+        if (!values.date) {
+          errors.date = requiredError;
         }
-        if (!values.latin) {
-          errors.latin = requiredError;
+        if (!values.specialist) {
+          errors.specialist = requiredError;
+        }
+        if (!values.diagnosisCodes) {
+          errors.diagnosisCodes = requiredError;
         }
 
         return errors;
@@ -71,13 +80,24 @@ export const AddDiagnosisForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
               name="specialist"
               component={TextField}
             />
-            {diagnosis && (
-              <DiagnosisSelection
-                setFieldValue={setFieldValue}
-                setFieldTouched={setFieldTouched}
-                diagnoses={Object.values(diagnosis)}
-              />
-            )}
+            <DiagnosisSelection
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+              diagnoses={Object.values(diagnosis)}
+            />
+            <Field
+              label="Criteria"
+              placeholder="Criteria"
+              name="discharge.criteria"
+              component={TextField}
+            />
+            <Field
+              label="Date"
+              placeholder="Date"
+              name="discharge.date"
+              component={TextField}
+            />
+
             <Grid>
               <Grid.Column floated="left" width={5}>
                 <Button type="button" onClick={onCancel} color="red">
